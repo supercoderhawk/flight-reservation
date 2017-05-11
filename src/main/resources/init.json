@@ -1,3 +1,193 @@
 {
-
+  "admins": [
+    {
+      "userName": "root",
+      "password": "12345"
+    }
+  ],
+  "passengers": [
+  ],
+  "citys":["Shenzhen","Beijing","Shanghai"],
+  "flights": [
+    {
+      "flightID": "SZ1001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shenzhen",
+      "arrivalCity": "Beiijing",
+      "departureDate": "2017-05-11",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SZ1002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shenzhen",
+      "arrivalCity": "Shanghai",
+      "departureDate": "2017-05-11",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SZ2001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shenzhen",
+      "arrivalCity": "Beiijing",
+      "departureDate": "2017-05-12",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SZ2002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shenzhen",
+      "arrivalCity": "Shanghai",
+      "departureDate": "2017-05-12",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SZ3001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shenzhen",
+      "arrivalCity": "Beiijing",
+      "departureDate": "2017-05-13",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SZ3002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shenzhen",
+      "arrivalCity": "Beiijing",
+      "departureDate": "2017-05-13",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "BJ1001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Beijing",
+      "arrivalCity": "Shenzhen",
+      "departureDate": "2017-05-11",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "BJ1002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Beijing",
+      "arrivalCity": "Shanghai",
+      "departureDate": "2017-05-11",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "BJ2001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Beijing",
+      "arrivalCity": "Shanghai",
+      "departureDate": "2017-05-12",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "BJ2002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Beijing",
+      "arrivalCity": "Shenzhen",
+      "departureDate": "2017-05-12",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "BJ3001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Beijing",
+      "arrivalCity": "Shanghai",
+      "departureDate": "2017-05-13",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "BJ3002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Beijing",
+      "arrivalCity": "Shenzhen",
+      "departureDate": "2017-05-13",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SH1001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shanghai",
+      "arrivalCity": "Shenzhen",
+      "departureDate": "2017-05-11",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SH1002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shanghai",
+      "arrivalCity": "Shenzhen",
+      "departureDate": "2017-05-11",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SH2001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shanghai",
+      "arrivalCity": "Shenzhen",
+      "departureDate": "2017-05-12",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SH2002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shanghai",
+      "arrivalCity": "Beijing",
+      "departureDate": "2017-05-12",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SH3001",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shanghai",
+      "arrivalCity": "Shenzhen",
+      "departureDate": "2017-05-13",
+      "price": 120,
+      "seatCapacity": 120
+    },
+    {
+      "flightID": "SH3002",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shanghai",
+      "arrivalCity": "Beijing",
+      "departureDate": "2017-05-13",
+      "price": 120,
+      "seatCapacity": 120
+    }
+  ]
 }
