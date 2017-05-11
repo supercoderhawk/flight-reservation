@@ -1,4 +1,4 @@
-package com.airline.bean;
+package com.airline.bean.Result;
 
 /**
  * Created by airline on 2017/5/10.
