@@ -45,7 +45,7 @@ public class FlightDao extends BaseDao{
 
   }
 
-  protected void removeFlightByID(String flightSerial){
+  protected void removeFlightBySerial(String flightSerial){
     ArrayList<Flight> flights = dataSource.getFlights();
     for(int i =0; i<flights.size();i++){
       if(flights.get(i).getFlightSerial().equals(flightSerial)){

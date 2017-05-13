@@ -2,10 +2,16 @@ package com.airline.service;
 
 import com.airline.DataSource;
 import com.airline.bean.Flight;
-import com.airline.bean.Result.FlightResult;
+import com.airline.bean.OperationResult;
 import com.airline.dao.FlightDao;
-import com.airline.utils.Operation;
 import com.airline.utils.Constant.FlightStatus;
+import com.airline.utils.Constant.QueryFlightStrategy;
+import com.airline.utils.Operation;
+
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import static com.airline.utils.Constant.flightStatusMap;
 
 /**
@@ -18,29 +24,119 @@ public class FlightService extends FlightDao {
     super(dataSource);
   }
 
-  public FlightResult createFlight(Flight flight){
-    if(getFlightByID(flight.getFlightID())!=null){
-     return Operation.failAtFlight("航班ID已存在");
+  public OperationResult<?> createFlight(Flight flight){
+    if(getFlightBySerial(flight.getFlightSerial())!=null){
+     return Operation.fail("航班序列号已存在");
     }
     addFlight(flight);
     return Operation.success(flight);
   }
 
-  public FlightResult updateFlight(Flight flight){
+  public OperationResult<?> updateFlight(Flight flight){
+    Flight oldFlight = getFlightBySerial(flight.getFlightSerial());
+    if(oldFlight == null){
+      return Operation.fail("航班不存在");
+    }
+
+    switch (oldFlight.getFlightStatus()){
+      case UNPUBLISHED:
+        if(flight.getStartTime() != null){
+          oldFlight.setStartTime(flight.getStartTime());
+        }
+        if(flight.getArrivalTime() != null){
+          oldFlight.setArrivalTime(flight.getArrivalTime());
+        }
+        if(flight.getStartCity() != null){
+          oldFlight.setStartCity(flight.getStartCity());
+        }
+        if(flight.getArrivalCity() != null){
+          oldFlight.setArrivalCity(flight.getArrivalCity());
+        }
+      case AVAILABLE:
+        if(flight.getPrice() != null){
+          oldFlight.setPrice(flight.getPrice());
+        }
+        if(flight.getCurrentPassengers() != null){
+          oldFlight.setCurrentPassengers(flight.getCurrentPassengers());
+        }
+        if(flight.getSeatCapacity() != null){
+          oldFlight.setSeatCapacity(flight.getSeatCapacity());
+        }
+        if(flight.getPassengerIDs() != null){
+          oldFlight.setPassengerIDs(flight.getPassengerIDs());
+        }
+        break;
+      default:
+        break;
+    }
 
     return Operation.success(flight);
   }
 
-  public FlightResult deleteFlight(String flightID){
-    Flight flight = getFlightByID(flightID);
+  public void publishAllFlights(){
+    ArrayList<Flight> flights = dataSource.getFlights();
+    if(flights == null){
+      return;
+    }
+    for(Flight flight:flights){
+      if(flight.getFlightStatus() == FlightStatus.UNPUBLISHED){
+        flight.setFlightStatus(FlightStatus.AVAILABLE);
+      }
+    }
+  }
+
+  public OperationResult<Flight> publishFlight(String flightSeries){
+    Flight flight = getFlightBySerial(flightSeries);
     if(flight == null){
-      return Operation.failAtFlight("航班不存在");
+      return Operation.fail("航班不存在");
+    }
+    if(flight.getFlightStatus() != FlightStatus.UNPUBLISHED){
+      return Operation.fail("航班已发布");
+    }
+    flight.setFlightStatus(FlightStatus.AVAILABLE);
+    return Operation.success(flight);
+  }
+
+  public OperationResult<Flight> deleteFlight(String flightSerial){
+    Flight flight = getFlightBySerial(flightSerial);
+    if(flight == null){
+      return Operation.fail("航班不存在");
     }
     FlightStatus status = flight.getFlightStatus();
     if(status != FlightStatus.UNPUBLISHED && status != FlightStatus.TERMINATE){
-      return Operation.failAtFlight("航班状态为:"+flightStatusMap.get(status)+"，无法删除");
+      return Operation.fail("航班状态为:"+flightStatusMap.get(status)+"，无法删除");
     }
-    removeFlightByID(flight.getFlightID());
+    removeFlightBySerial(flight.getFlightID());
     return Operation.success(flight);
+  }
+
+  public OperationResult<ArrayList<Flight>> queryFlight(Flight flight, QueryFlightStrategy strategy){
+    ArrayList<Flight> flights;
+    Optional<String> startCity = Optional.ofNullable(flight.getStartCity());
+    Optional<String> arrivalCity = Optional.ofNullable(flight.getArrivalCity());
+    Optional<String> departureDate = Optional.ofNullable(flight.getDepartureDate());
+    if(strategy == QueryFlightStrategy.OTHER){
+      boolean isNotEmpty = startCity.isPresent() || arrivalCity.isPresent() || departureDate.isPresent();
+      if(!isNotEmpty){
+        return Operation.fail("起飞时间、到达时间和日期均未指定");
+      }
+    }
+
+    switch (strategy){
+      case ID:
+        flights = dataSource.getFlights().stream().filter(f->f.getFlightID().contains(flight.getFlightID()))
+                                                  .collect(Collectors.toCollection(ArrayList::new));
+        break;
+      case OTHER:
+        flights = dataSource.getFlights().stream()
+            .filter(f->!startCity.isPresent()|| f.getStartCity().equals(startCity.get()))
+            .filter(f->!arrivalCity.isPresent()||f.getStartCity().equals(arrivalCity.get()) )
+            .filter(f->!departureDate.isPresent()||f.getStartCity().equals(departureDate.get()))
+            .collect(Collectors.toCollection(ArrayList::new));
+        break;
+      default:
+        return Operation.fail("查询策略指定失败");
+    }
+    return Operation.success(flights);
   }
 }
