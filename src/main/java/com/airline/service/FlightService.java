@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.airline.utils.Constant.flightStatusMap;
+import static com.airline.utils.Constant.reply;
 
 /**
  * Created by airline on 2017/5/10.
@@ -25,17 +26,25 @@ public class FlightService extends FlightDao {
   }
 
   public OperationResult<?> createFlight(Flight flight){
+    OperationResult<Object> checkRes = dataSource.getModifyFlight();
+    if(!checkRes.isStatus()){
+      return Operation.fail(checkRes.getMsg());
+    }
     if(getFlightBySerial(flight.getFlightSerial())!=null){
-     return Operation.fail("航班序列号已存在");
+     return Operation.fail(reply.getFlightFlightExisted());
     }
     addFlight(flight);
     return Operation.success(flight);
   }
 
   public OperationResult<?> updateFlight(Flight flight){
+    OperationResult<Object> checkRes = dataSource.getModifyFlight();
+    if(!checkRes.isStatus()){
+      return Operation.fail(checkRes.getMsg());
+    }
     Flight oldFlight = getFlightBySerial(flight.getFlightSerial());
     if(oldFlight == null){
-      return Operation.fail("航班不存在");
+      return Operation.fail(reply.getFlightNoFlight());
     }
 
     switch (oldFlight.getFlightStatus()){
@@ -88,10 +97,10 @@ public class FlightService extends FlightDao {
   public OperationResult<Flight> publishFlight(String flightSeries){
     Flight flight = getFlightBySerial(flightSeries);
     if(flight == null){
-      return Operation.fail("航班不存在");
+      return Operation.fail(reply.getFlightNoFlight());
     }
     if(flight.getFlightStatus() != FlightStatus.UNPUBLISHED){
-      return Operation.fail("航班已发布");
+      return Operation.fail(reply.getFlightFlightPublished());
     }
     flight.setFlightStatus(FlightStatus.AVAILABLE);
     return Operation.success(flight);
@@ -100,11 +109,11 @@ public class FlightService extends FlightDao {
   public OperationResult<Flight> deleteFlight(String flightSerial){
     Flight flight = getFlightBySerial(flightSerial);
     if(flight == null){
-      return Operation.fail("航班不存在");
+      return Operation.fail(reply.getFlightNoFlight());
     }
     FlightStatus status = flight.getFlightStatus();
     if(status != FlightStatus.UNPUBLISHED && status != FlightStatus.TERMINATE){
-      return Operation.fail("航班状态为:"+flightStatusMap.get(status)+"，无法删除");
+      return Operation.fail(String.format(reply.getFlightCantDeleteFlight(),flightStatusMap.get(status)));
     }
     removeFlightBySerial(flight.getFlightID());
     return Operation.success(flight);
@@ -118,7 +127,7 @@ public class FlightService extends FlightDao {
     if(strategy == QueryFlightStrategy.OTHER){
       boolean isNotEmpty = startCity.isPresent() || arrivalCity.isPresent() || departureDate.isPresent();
       if(!isNotEmpty){
-        return Operation.fail("起飞时间、到达时间和日期均未指定");
+        return Operation.fail(reply.getFlightNotSetupAllTime());
       }
     }
 
@@ -135,7 +144,7 @@ public class FlightService extends FlightDao {
             .collect(Collectors.toCollection(ArrayList::new));
         break;
       default:
-        return Operation.fail("查询策略指定失败");
+        return Operation.fail(reply.getFlightQueryStrategyError());
     }
     return Operation.success(flights);
   }
