@@ -23,7 +23,12 @@
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
-      <version>1.8.10</version>
+      <version>1.8.7</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
     </dependency>
   </dependencies>
 
@@ -74,6 +79,29 @@
             <goals>
               <goal>compile</goal>
               <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jsonschema2pojo</groupId>
+        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+        <version>0.4.34</version>
+        <configuration>
+          <sourceDirectory>${basedir}/src/main/resources</sourceDirectory>
+          <targetPackage>com.airline.bean</targetPackage>
+          <outputDirectory>${basedir}/src/main/java</outputDirectory>
+          <addCompileSourceRoot>false</addCompileSourceRoot>
+          <excludes>
+            <exclude>init.json</exclude>
+          </excludes>
+          <sourceType>json</sourceType>
+          <annotationStyle>none</annotationStyle>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
             </goals>
           </execution>
         </executions>
