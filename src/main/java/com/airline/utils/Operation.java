@@ -1,7 +1,5 @@
 package com.airline.utils;
 
-import com.airline.bean.Flight;
-import com.airline.bean.Result.FlightResult;
 import com.airline.bean.Result.OperationResult;
 
 /**
@@ -9,19 +7,16 @@ import com.airline.bean.Result.OperationResult;
  * 业务操作返回结果的封装类
  */
 public class Operation {
-  public static OperationResult success(){
-    return new OperationResult(true,null,null);
+  public static OperationResult<Object> success(){
+    return new OperationResult<>(true,null,null);
   }
-  public static OperationResult success(Object obj){
-    return new OperationResult(true,obj,null);
+
+  public static <T> OperationResult<T> success(T t){
+    return new OperationResult<>(true,t,null);
   }
-  public static FlightResult success(Flight flight){
-    return new FlightResult(true,null,flight);
+
+  public static <T> OperationResult<T> fail(String msg){
+    return new OperationResult<>(false,null,msg);
   }
-  public static OperationResult fail(String msg){
-    return new OperationResult(false,null,msg);
-  }
-  public static FlightResult failAtFlight(String msg){
-    return new FlightResult(false,msg,null);
-  }
+
 }
