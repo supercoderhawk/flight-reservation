@@ -1,6 +1,7 @@
 package com.airline.utils;
 
-import com.airline.bean.Flight;
+import com.airline.bean.Reply;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,14 +13,31 @@ import java.util.Map;
 public class Constant {
   public enum Identity {ADMIN,USER}
 
-  public enum OrderStatus {UNPAID, PAID, CANCEL}
+  public enum OrderStatus {
+    @SerializedName("unpaid")
+    UNPAID,
+    @SerializedName("paid")
+    PAID,
+    @SerializedName("cancel")
+    CANCEL}
 
-  public enum FlightStatus {UNPUBLISHED, AVAILABLE, FULL, TERMINATE}
+  public enum FlightStatus {
+    @SerializedName("unpublished")
+    UNPUBLISHED,
+    @SerializedName("available")
+    AVAILABLE,
+    @SerializedName("full")
+    FULL,
+    @SerializedName("terminate")
+    TERMINATE}
+
+  public enum QueryFlightStrategy{ID,OTHER}
 
   public static Map<OrderStatus,String> orderStatusMap = new HashMap<>();
 
   public static Map<FlightStatus,String> flightStatusMap = new HashMap<>();
 
+  public final Reply reply = util.loadFileToObject("constant.json", com.airline.bean.Constant.class).getReply();
   static {
     orderStatusMap.put(OrderStatus.PAID,"已支付");
     orderStatusMap.put(OrderStatus.UNPAID,"未支付");
@@ -28,6 +46,7 @@ public class Constant {
     flightStatusMap.put(FlightStatus.FULL,"订满");
     flightStatusMap.put(FlightStatus.UNPUBLISHED,"未发布");
     flightStatusMap.put(FlightStatus.TERMINATE,"终止");
+
   }
 
 }
