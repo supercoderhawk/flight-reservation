@@ -16,13 +16,13 @@ public class Flight {
   private String startCity;
   private String arrivalCity;
   private String departureDate;
-  private int price;
-  private int currentPassengers;
-  private int seatCapacity;
+  private Integer price;
+  private Integer currentPassengers;
+  private Integer seatCapacity;
   private FlightStatus flightStatus;
   private ArrayList<Integer> passengerIDs;
 
-  public Flight(String flightID, String flightSerial,String startTime, String arrivalTime, String startCity, String arrivalCity, String departureDate, int price, int seatCapacity) {
+  public Flight(String flightID, String flightSerial,String startTime, String arrivalTime, String startCity, String arrivalCity, String departureDate, Integer price, Integer seatCapacity) {
     this.flightID = flightID;
     this.flightSerial = flightSerial;
     this.startTime = startTime;
@@ -33,6 +33,7 @@ public class Flight {
     this.price = price;
     this.seatCapacity = seatCapacity;
     this.flightStatus = FlightStatus.UNPUBLISHED;
+    currentPassengers = 0;
     passengerIDs = new ArrayList<>();
   }
 
@@ -97,27 +98,27 @@ public class Flight {
     this.departureDate = departureDate;
   }
 
-  public int getPrice() {
+  public Integer getPrice() {
     return price;
   }
 
-  public void setPrice(int price) {
+  public void setPrice(Integer price) {
     this.price = price;
   }
 
-  public int getCurrentPassengers() {
+  public Integer getCurrentPassengers() {
     return currentPassengers;
   }
 
-  public void setCurrentPassengers(int currentPassengers) {
+  public void setCurrentPassengers(Integer currentPassengers) {
     this.currentPassengers = currentPassengers;
   }
 
-  public int getSeatCapacity() {
+  public Integer getSeatCapacity() {
     return seatCapacity;
   }
 
-  public void setSeatCapacity(int seatCapacity) {
+  public void setSeatCapacity(Integer seatCapacity) {
     this.seatCapacity = seatCapacity;
   }
 
