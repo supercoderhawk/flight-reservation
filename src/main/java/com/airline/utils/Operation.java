@@ -1,6 +1,6 @@
 package com.airline.utils;
 
-import com.airline.bean.Result.OperationResult;
+import com.airline.bean.OperationResult;
 
 /**
  * Created by airline on 2017/5/10.
