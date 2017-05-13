@@ -11,6 +11,7 @@
   "flights": [
     {
       "flightID": "SZ1001",
+      "flightSerial":"AAA170511-SZ1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
@@ -21,6 +22,7 @@
     },
     {
       "flightID": "SZ1002",
+      "flightSerial":"AAA170511-SZ1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
@@ -30,7 +32,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "SZ2001",
+      "flightID": "SZ1001",
+      "flightSerial":"AAA170512-SZ1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
@@ -40,7 +43,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "SZ2002",
+      "flightID": "SZ1002",
+      "flightSerial":"AAA170512-SZ1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
@@ -50,7 +54,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "SZ3001",
+      "flightID": "SZ1001",
+      "flightSerial":"AAA170513-SZ1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
@@ -60,7 +65,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "SZ3002",
+      "flightID": "SZ1002",
+      "flightSerial":"AAA170513-SZ1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
@@ -71,6 +77,7 @@
     },
     {
       "flightID": "BJ1001",
+      "flightSerial":"AAA170511-BJ1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Beijing",
@@ -81,6 +88,7 @@
     },
     {
       "flightID": "BJ1002",
+      "flightSerial":"AAA170511-BJ1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Beijing",
@@ -90,7 +98,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "BJ2001",
+      "flightID": "BJ1001",
+      "flightSerial":"AAA170512-BJ1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Beijing",
@@ -100,7 +109,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "BJ2002",
+      "flightID": "BJ1002",
+      "flightSerial":"AAA170512-BJ1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Beijing",
@@ -110,7 +120,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "BJ3001",
+      "flightID": "BJ1001",
+      "flightSerial":"AAA170513-BJ1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Beijing",
@@ -120,7 +131,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "BJ3002",
+      "flightID": "BJ1002",
+      "flightSerial":"AAA170513-BJ1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Beijing",
@@ -131,6 +143,7 @@
     },
     {
       "flightID": "SH1001",
+      "flightSerial":"AAA170511-SH1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shanghai",
@@ -141,6 +154,7 @@
     },
     {
       "flightID": "SH1002",
+      "flightSerial":"AAA170511-SH1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shanghai",
@@ -150,7 +164,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "SH2001",
+      "flightID": "SH1001",
+      "flightSerial":"AAA170512-SH1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shanghai",
@@ -160,7 +175,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "SH2002",
+      "flightID": "SH1002",
+      "flightSerial":"AAA170512-SH1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shanghai",
@@ -170,7 +186,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "SH3001",
+      "flightID": "SH1001",
+      "flightSerial":"AAA170513-SH1001",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shanghai",
@@ -180,7 +197,8 @@
       "seatCapacity": 120
     },
     {
-      "flightID": "SH3002",
+      "flightID": "SH1002",
+      "flightSerial":"AAA170513-SH1002",
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shanghai",

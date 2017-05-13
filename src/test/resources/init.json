@@ -7,7 +7,7 @@
   ],
   "passengers": [
   ],
-  "citys":["Shenzhen","Beijing","Shanghai"],
+  "cities":["Shenzhen","Beijing","Shanghai"],
   "flights": [
     {
       "flightID": "SZ1001",

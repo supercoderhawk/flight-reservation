@@ -4,6 +4,7 @@ import com.airline.DataSource;
 import com.airline.bean.Flight;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Created by airline on 2017/5/10.
@@ -15,21 +16,27 @@ public class FlightDao extends BaseDao{
   }
 
   protected void addFlight(Flight flight){
-    dataSource.getFlights().add(new Flight(flight.getFlightID(),flight.getStartTime(),flight.getArrivalTime(),flight
-        .getStartCity(),flight.getArrivalCity(),flight.getDepartureDate(),flight.getPrice(),flight.getSeatCapacity()));
+    dataSource.getFlights().add(new Flight(flight.getFlightID(),flight.getFlightSerial(),flight.getStartTime(),
+                                           flight.getArrivalTime(), flight.getStartCity(),flight.getArrivalCity(),
+                                           flight.getDepartureDate(),flight.getPrice(),flight.getSeatCapacity()));
   }
 
-  protected Flight getFlightByID(String flightID){
+  protected ArrayList<Flight> getFlightByID(String flightID){
+
+    return dataSource.getFlights().stream().filter(f->f.getFlightID().equals(flightID))
+                                      .collect(Collectors.toCollection(ArrayList::new));
+  }
+
+  protected Flight getFlightBySerial(String serial){
     for(Flight fight:dataSource.getFlights()){
-      if(fight.getFlightID().equals(flightID)){
+      if(fight.getFlightSerial().equals(serial)){
         return fight;
       }
     }
     return null;
   }
-
   protected void updateFlightInfo(Flight flight){
-    Flight oldFlight = getFlightByID(flight.getFlightID());
+    Flight oldFlight = getFlightBySerial(flight.getFlightSerial());
     oldFlight.setArrivalCity(flight.getArrivalCity());
 
   }
@@ -38,10 +45,10 @@ public class FlightDao extends BaseDao{
 
   }
 
-  protected void removeFlightByID(String flightID){
+  protected void removeFlightByID(String flightSerial){
     ArrayList<Flight> flights = dataSource.getFlights();
     for(int i =0; i<flights.size();i++){
-      if(flights.get(i).getFlightID().equals(flightID)){
+      if(flights.get(i).getFlightSerial().equals(flightSerial)){
         flights.remove(i);
         break;
       }

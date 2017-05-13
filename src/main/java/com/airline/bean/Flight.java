@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class Flight {
   private String flightID;
+  private String flightSerial;
   private String startTime;
   private String arrivalTime;
   private String startCity;
@@ -21,8 +22,9 @@ public class Flight {
   private FlightStatus flightStatus;
   private ArrayList<Integer> passengerIDs;
 
-  public Flight(String flightID, String startTime, String arrivalTime, String startCity, String arrivalCity, String departureDate, int price, int seatCapacity) {
+  public Flight(String flightID, String flightSerial,String startTime, String arrivalTime, String startCity, String arrivalCity, String departureDate, int price, int seatCapacity) {
     this.flightID = flightID;
+    this.flightSerial = flightSerial;
     this.startTime = startTime;
     this.arrivalTime = arrivalTime;
     this.startCity = startCity;
@@ -30,9 +32,13 @@ public class Flight {
     this.departureDate = departureDate;
     this.price = price;
     this.seatCapacity = seatCapacity;
+    this.flightStatus = FlightStatus.UNPUBLISHED;
+    passengerIDs = new ArrayList<>();
   }
 
   public Flight() {
+    this.flightStatus = FlightStatus.UNPUBLISHED;
+    passengerIDs = new ArrayList<>();
   }
 
   public String getFlightID() {
@@ -41,6 +47,14 @@ public class Flight {
 
   public void setFlightID(String flightID) {
     this.flightID = flightID;
+  }
+
+  public String getFlightSerial() {
+    return flightSerial;
+  }
+
+  public void setFlightSerial(String flightSerial) {
+    this.flightSerial = flightSerial;
   }
 
   public String getStartTime() {
