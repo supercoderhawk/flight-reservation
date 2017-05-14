@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
@@ -78,14 +80,25 @@ public class util {
     return false;
   }
 
-  public static boolean isDateValidate(String dateString){
+  public static boolean isStartTimeValidate(String timeString){
+    LocalTime time = parseTime(timeString);
+    return time != null && Duration.between(LocalTime.now(),time).toHours() >= 2;
+  }
+
+  public static boolean isStartAndArrivalTimeValidate(String startTime, String arrivalTime){
+    LocalTime start = parseTime(startTime);
+    LocalTime arrival = parseTime(arrivalTime);
+    return start != null && arrival != null && !Duration.between(start,arrival).isNegative();
+  }
+
+  public static boolean isDateValidate(String dateString) {
     String pattern = "\\d{4}-\\d{2}-\\d{2}";
     Pattern r = Pattern.compile(pattern);
     Matcher m = r.matcher(dateString);
-    if(m.matches()){
-      try{
+    if (m.matches()) {
+      try {
         LocalDate date = LocalDate.parse(dateString);
-      }catch (DateTimeParseException e){
+      } catch (DateTimeParseException e) {
         System.out.println(e.getCause().getLocalizedMessage());
         return false;
       }
@@ -112,7 +125,23 @@ public class util {
     return shortBuffer.toString();
   }
 
-  public static long generateOrderID(LocalDateTime time){
+  public static long generateOrderID(LocalDateTime time) {
     return time.toInstant(OffsetDateTime.now().getOffset()).getEpochSecond();
   }
+
+  public static String encrypt(String str) {
+    StringBuilder sb = new StringBuilder();
+    try {
+      MessageDigest md = MessageDigest.getInstance("SHA-256");
+      md.update(str.getBytes());
+      byte byteData[] = md.digest();
+      for (byte b : byteData) {
+        sb.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+      }
+    } catch (NoSuchAlgorithmException e) {
+      return null;
+    }
+    return sb.toString();
+  }
+
 }

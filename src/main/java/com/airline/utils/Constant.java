@@ -19,7 +19,9 @@ public class Constant {
     @SerializedName("paid")
     PAID,
     @SerializedName("cancel")
-    CANCEL}
+    CANCEL,
+    @SerializedName("fail")
+    FAIL}
 
   public enum FlightStatus {
     @SerializedName("unpublished")
@@ -37,7 +39,7 @@ public class Constant {
 
   public static Map<FlightStatus,String> flightStatusMap = new HashMap<>();
 
-  public final Reply reply = util.loadFileToObject("constant.json", com.airline.bean.Constant.class).getReply();
+  public static final Reply reply = util.loadFileToObject("constant.json", com.airline.bean.Constant.class).getReply();
   static {
     orderStatusMap.put(OrderStatus.PAID,"已支付");
     orderStatusMap.put(OrderStatus.UNPAID,"未支付");
