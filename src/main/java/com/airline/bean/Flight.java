@@ -43,6 +43,18 @@ public class Flight {
   public Flight() {
   }
 
+  public Flight(String flightID,String flightSerial,String startTime,String arrivalTime,String startCity,String
+      arrivalCity,String departureDate,Integer price,Integer seatCapacity){
+    this.flightID = flightID;
+    this.flightSerial = flightSerial;
+    this.startTime = startTime;
+    this.arrivalTime = arrivalTime;
+    this.startCity = startCity;
+    this.arrivalCity = arrivalCity;
+    this.departureDate = departureDate;
+    this.price = price;
+    this.seatCapacity = seatCapacity;
+  }
   public Flight(Flight flight){
     this.flightID = flight.getFlightID();
     this.flightSerial = flight.getFlightSerial();
