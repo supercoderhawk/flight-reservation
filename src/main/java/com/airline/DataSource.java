@@ -1,6 +1,6 @@
 package com.airline;
 
-import com.airline.bean.Result.OperationResult;
+import com.airline.bean.OperationResult;
 import com.airline.utils.Constant.Identity;
 import com.airline.bean.Admin;
 import com.airline.bean.Flight;
@@ -21,6 +21,9 @@ public class DataSource {
   private ArrayList<Order> orders = new ArrayList<Order>();
   private ArrayList<String> cities = new ArrayList<>();
   private OperationResult<Object> modifyFlight;
+  private OperationResult<Flight> orderCheck;
+  private OperationResult<Object> passengerCheck;
+  private boolean isLogin;
 
   public DataSource() {
 
@@ -80,5 +83,29 @@ public class DataSource {
 
   public void setCities(ArrayList<String> cities) {
     this.cities = cities;
+  }
+
+  public boolean isLogin() {
+    return isLogin;
+  }
+
+  public void setLogin(boolean login) {
+    isLogin = login;
+  }
+
+  public OperationResult<Flight> getOrderCheck() {
+    return orderCheck;
+  }
+
+  public void setOrderCheck(OperationResult<Flight> orderCheck) {
+    this.orderCheck = orderCheck;
+  }
+
+  public OperationResult<Object> getPassengerCheck() {
+    return passengerCheck;
+  }
+
+  public void setPassengerCheck(OperationResult<Object> passengerCheck) {
+    this.passengerCheck = passengerCheck;
   }
 }

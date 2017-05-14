@@ -1,0 +1,40 @@
+{
+  "reply":{
+    "appInitFail":"程序初始化失败",
+    "appTimeFormatError":"时间格式不对，应为：HH:mm:ss",
+    "flightFlightIDEmpty":"航班号为空",
+    "flightFlightSerialEmpty":"航班序列号为空",
+    "flightStartCityEmpty":"起飞城市为空",
+    "flightArrivalCityEmpty":"到达城市为空",
+    "flightNoFlight":"航班不存在",
+    "flightFlightExisted":"航班序列号已存在",
+    "flightFlightPublished":"航班已发布",
+    "flightNotSetupAllTime":"起飞时间、到达时间和日期均未指定",
+    "flightQueryStrategyError":"查询策略指定失败",
+    "flightCantDeleteFlight":"航班状态为: %s，无法删除",
+    "flightFunctionInvokeError":"函数调用错误",
+    "flightParameterEmpty":"起飞时间、到达时间、起飞日期、起飞城市和到达城市之中有空值",
+    "flightStartTimeError":"起飞时间格式不对，应为：HH:mm:ss",
+    "flightArrivalTimeError":"到达时间格式不对，应为：HH:mm:ss",
+    "flightDepartureDateError":"起飞日期格式不对，因为yyyy-MM-dd",
+    "orderIDNotExist":"订单ID不存在",
+    "orderPayCancel":"支付被取消，订单取消",
+    "orderFlightCantReserve":"航班状态为%s，无法预订",
+    "passengerNameEmpty":"乘客真实姓名为空",
+    "passengerIdentityLengthError":"身份证号码必须为8位",
+    "passengerPasswordEmpty":"密码为空",
+    "passengerAuthenticateFailed":"登录失败，用户名或者密码错误",
+    "adminUserNameEmpty":"管理员用户名为空",
+    "adminUserNameExisted":"管理员用户名已存在"
+  },
+  "prompt":{
+    "adminLogin":{
+      "cmd":1,
+      "prompt":"管理员登录"
+    },
+    "passengerLogin":{
+      "cmd":2,
+      "prompt":"乘客登录"
+    }
+  }
+}

@@ -40,8 +40,8 @@ public class FlightAspect {
    * <p>更新航班时，值为null的参数会被忽略</p>
    * <p>检查结果存储于dataSource的modifyFlight字段中</p>
    *
-   * @param joinPoint
-   * @param flight
+   * @param joinPoint:
+   * @param flight:
    */
   @Before("validatePoint(com.airline.bean.Flight) && args(flight)")
   public void validateFlight(JoinPoint joinPoint, Flight flight) {
@@ -67,6 +67,8 @@ public class FlightAspect {
     Optional<String> arrivalTime = Optional.ofNullable(flight.getArrivalTime());
     Optional<String> departureDate = Optional.ofNullable(flight.getDepartureDate());
     boolean isNotEmpty = startTime.isPresent() && arrivalTime.isPresent() && departureDate.isPresent();
+    isNotEmpty = isNotEmpty && StringUtils.isNotEmpty(flight.getStartCity())
+                      && StringUtils.isNotEmpty(flight.getArrivalCity());
 
     if (func == ValidateFunction.CREATE) {
       if (!isNotEmpty) {
@@ -108,7 +110,6 @@ public class FlightAspect {
       }
     }
     dataSource.setModifyFlight(Operation.success());
-    String target = joinPoint.toShortString();
   }
 
   @Pointcut("execution(* com.airline.service.FlightService.*(..))")
