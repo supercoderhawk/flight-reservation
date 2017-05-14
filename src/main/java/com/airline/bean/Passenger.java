@@ -11,13 +11,15 @@ public class Passenger {
   private String realName;
   private String identityID;
   private String password;
+  private String admin;
   private ArrayList<Order> orderList;
 
-  public Passenger(int passengerID, String realName, String identityID, String password) {
+  public Passenger(int passengerID, String realName, String identityID, String password,String admin) {
     this.passengerID = passengerID;
     this.realName = realName;
     this.identityID = identityID;
     this.password = password;
+    this.admin = admin;
   }
 
   public Passenger() {
@@ -61,5 +63,13 @@ public class Passenger {
 
   public void setOrderList(ArrayList<Order> orderList) {
     this.orderList = orderList;
+  }
+
+  public String getAdmin() {
+    return admin;
+  }
+
+  public void setAdmin(String admin) {
+    this.admin = admin;
   }
 }

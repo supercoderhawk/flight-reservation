@@ -1,15 +1,17 @@
 
 package com.airline.bean;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constant {
 
     private Reply reply;
+    private Prompt prompt;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public Reply getReply() {
@@ -18,6 +20,14 @@ public class Constant {
 
     public void setReply(Reply reply) {
         this.reply = reply;
+    }
+
+    public Prompt getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(Prompt prompt) {
+        this.prompt = prompt;
     }
 
     @Override
@@ -35,7 +45,7 @@ public class Constant {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(reply).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(reply).append(prompt).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -47,7 +57,7 @@ public class Constant {
             return false;
         }
         Constant rhs = ((Constant) other);
-        return new EqualsBuilder().append(reply, rhs.reply).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(reply, rhs.reply).append(prompt, rhs.prompt).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }
