@@ -26,7 +26,7 @@ public class FlightService extends FlightDao {
     super(dataSource);
   }
 
-  public OperationResult<?> createFlight(Flight flight){
+  public OperationResult<Flight> createFlight(Flight flight){
     OperationResult<Object> checkRes = dataSource.getModifyFlight();
     if(!checkRes.isStatus()){
       return Operation.fail(checkRes.getMsg());
@@ -38,7 +38,7 @@ public class FlightService extends FlightDao {
     return Operation.success(flight);
   }
 
-  public OperationResult<?> updateFlight(Flight flight){
+  public OperationResult<Flight> updateFlight(Flight flight){
     OperationResult<Object> checkRes = dataSource.getModifyFlight();
     if(!checkRes.isStatus()){
       return Operation.fail(checkRes.getMsg());
