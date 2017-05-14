@@ -1,5 +1,6 @@
 package com.airline.utils;
 
+import com.airline.bean.Const;
 import com.airline.bean.Reply;
 import com.google.gson.annotations.SerializedName;
 
@@ -39,7 +40,7 @@ public class Constant {
 
   public static Map<FlightStatus,String> flightStatusMap = new HashMap<>();
 
-  public static final Reply reply = util.loadFileToObject("constant.json", com.airline.bean.Constant.class).getReply();
+  public static final Reply reply = util.loadFileToObject("const.json", Const.class).getReply();
   static {
     orderStatusMap.put(OrderStatus.PAID,"已支付");
     orderStatusMap.put(OrderStatus.UNPAID,"未支付");

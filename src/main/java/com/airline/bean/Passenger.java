@@ -14,15 +14,13 @@ public class Passenger {
   private String salt;
   private ArrayList<Order> orderList = new ArrayList<>();
 
-  public Passenger(Integer passengerID, String realName, String identityID, String password,String salt) {
-    this.passengerID = passengerID;
+  public Passenger(String realName, String identityID, String password) {
     this.realName = realName;
     this.identityID = identityID;
     this.password = password;
-    this.salt = salt;
   }
 
-  public Passenger(Passenger passenger){
+  public Passenger(Passenger passenger) {
     this.passengerID = passenger.getPassengerID();
     this.realName = passenger.getRealName();
     this.identityID = passenger.getIdentityID();
@@ -30,6 +28,7 @@ public class Passenger {
     this.salt = passenger.getSalt();
     this.orderList = passenger.getOrderList();
   }
+
   public Passenger() {
   }
 

@@ -11,6 +11,7 @@ public class Reply {
 
     private String appInitFail;
     private String appTimeFormatError;
+    private String appInputInvalidate;
     private String flightFlightIDEmpty;
     private String flightFlightSerialEmpty;
     private String flightStartCityEmpty;
@@ -35,6 +36,8 @@ public class Reply {
     private String passengerAuthenticateFailed;
     private String adminUserNameEmpty;
     private String adminUserNameExisted;
+    private String adminUserNameNoExist;
+    private String adminAuthenticateFail;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public String getAppInitFail() {
@@ -51,6 +54,14 @@ public class Reply {
 
     public void setAppTimeFormatError(String appTimeFormatError) {
         this.appTimeFormatError = appTimeFormatError;
+    }
+
+    public String getAppInputInvalidate() {
+        return appInputInvalidate;
+    }
+
+    public void setAppInputInvalidate(String appInputInvalidate) {
+        this.appInputInvalidate = appInputInvalidate;
     }
 
     public String getFlightFlightIDEmpty() {
@@ -245,6 +256,22 @@ public class Reply {
         this.adminUserNameExisted = adminUserNameExisted;
     }
 
+    public String getAdminUserNameNoExist() {
+        return adminUserNameNoExist;
+    }
+
+    public void setAdminUserNameNoExist(String adminUserNameNoExist) {
+        this.adminUserNameNoExist = adminUserNameNoExist;
+    }
+
+    public String getAdminAuthenticateFail() {
+        return adminAuthenticateFail;
+    }
+
+    public void setAdminAuthenticateFail(String adminAuthenticateFail) {
+        this.adminAuthenticateFail = adminAuthenticateFail;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -260,7 +287,7 @@ public class Reply {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(appInitFail).append(appTimeFormatError).append(flightFlightIDEmpty).append(flightFlightSerialEmpty).append(flightStartCityEmpty).append(flightArrivalCityEmpty).append(flightNoFlight).append(flightFlightExisted).append(flightFlightPublished).append(flightNotSetupAllTime).append(flightQueryStrategyError).append(flightCantDeleteFlight).append(flightFunctionInvokeError).append(flightParameterEmpty).append(flightStartTimeError).append(flightArrivalTimeError).append(flightDepartureDateError).append(orderIDNotExist).append(orderPayCancel).append(orderFlightCantReserve).append(passengerNameEmpty).append(passengerIdentityLengthError).append(passengerPasswordEmpty).append(passengerAuthenticateFailed).append(adminUserNameEmpty).append(adminUserNameExisted).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(appInitFail).append(appTimeFormatError).append(appInputInvalidate).append(flightFlightIDEmpty).append(flightFlightSerialEmpty).append(flightStartCityEmpty).append(flightArrivalCityEmpty).append(flightNoFlight).append(flightFlightExisted).append(flightFlightPublished).append(flightNotSetupAllTime).append(flightQueryStrategyError).append(flightCantDeleteFlight).append(flightFunctionInvokeError).append(flightParameterEmpty).append(flightStartTimeError).append(flightArrivalTimeError).append(flightDepartureDateError).append(orderIDNotExist).append(orderPayCancel).append(orderFlightCantReserve).append(passengerNameEmpty).append(passengerIdentityLengthError).append(passengerPasswordEmpty).append(passengerAuthenticateFailed).append(adminUserNameEmpty).append(adminUserNameExisted).append(adminUserNameNoExist).append(adminAuthenticateFail).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -272,7 +299,7 @@ public class Reply {
             return false;
         }
         Reply rhs = ((Reply) other);
-        return new EqualsBuilder().append(appInitFail, rhs.appInitFail).append(appTimeFormatError, rhs.appTimeFormatError).append(flightFlightIDEmpty, rhs.flightFlightIDEmpty).append(flightFlightSerialEmpty, rhs.flightFlightSerialEmpty).append(flightStartCityEmpty, rhs.flightStartCityEmpty).append(flightArrivalCityEmpty, rhs.flightArrivalCityEmpty).append(flightNoFlight, rhs.flightNoFlight).append(flightFlightExisted, rhs.flightFlightExisted).append(flightFlightPublished, rhs.flightFlightPublished).append(flightNotSetupAllTime, rhs.flightNotSetupAllTime).append(flightQueryStrategyError, rhs.flightQueryStrategyError).append(flightCantDeleteFlight, rhs.flightCantDeleteFlight).append(flightFunctionInvokeError, rhs.flightFunctionInvokeError).append(flightParameterEmpty, rhs.flightParameterEmpty).append(flightStartTimeError, rhs.flightStartTimeError).append(flightArrivalTimeError, rhs.flightArrivalTimeError).append(flightDepartureDateError, rhs.flightDepartureDateError).append(orderIDNotExist, rhs.orderIDNotExist).append(orderPayCancel, rhs.orderPayCancel).append(orderFlightCantReserve, rhs.orderFlightCantReserve).append(passengerNameEmpty, rhs.passengerNameEmpty).append(passengerIdentityLengthError, rhs.passengerIdentityLengthError).append(passengerPasswordEmpty, rhs.passengerPasswordEmpty).append(passengerAuthenticateFailed, rhs.passengerAuthenticateFailed).append(adminUserNameEmpty, rhs.adminUserNameEmpty).append(adminUserNameExisted, rhs.adminUserNameExisted).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(appInitFail, rhs.appInitFail).append(appTimeFormatError, rhs.appTimeFormatError).append(appInputInvalidate, rhs.appInputInvalidate).append(flightFlightIDEmpty, rhs.flightFlightIDEmpty).append(flightFlightSerialEmpty, rhs.flightFlightSerialEmpty).append(flightStartCityEmpty, rhs.flightStartCityEmpty).append(flightArrivalCityEmpty, rhs.flightArrivalCityEmpty).append(flightNoFlight, rhs.flightNoFlight).append(flightFlightExisted, rhs.flightFlightExisted).append(flightFlightPublished, rhs.flightFlightPublished).append(flightNotSetupAllTime, rhs.flightNotSetupAllTime).append(flightQueryStrategyError, rhs.flightQueryStrategyError).append(flightCantDeleteFlight, rhs.flightCantDeleteFlight).append(flightFunctionInvokeError, rhs.flightFunctionInvokeError).append(flightParameterEmpty, rhs.flightParameterEmpty).append(flightStartTimeError, rhs.flightStartTimeError).append(flightArrivalTimeError, rhs.flightArrivalTimeError).append(flightDepartureDateError, rhs.flightDepartureDateError).append(orderIDNotExist, rhs.orderIDNotExist).append(orderPayCancel, rhs.orderPayCancel).append(orderFlightCantReserve, rhs.orderFlightCantReserve).append(passengerNameEmpty, rhs.passengerNameEmpty).append(passengerIdentityLengthError, rhs.passengerIdentityLengthError).append(passengerPasswordEmpty, rhs.passengerPasswordEmpty).append(passengerAuthenticateFailed, rhs.passengerAuthenticateFailed).append(adminUserNameEmpty, rhs.adminUserNameEmpty).append(adminUserNameExisted, rhs.adminUserNameExisted).append(adminUserNameNoExist, rhs.adminUserNameNoExist).append(adminAuthenticateFail, rhs.adminAuthenticateFail).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

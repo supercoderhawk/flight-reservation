@@ -7,7 +7,7 @@ package com.airline.bean;
 public class Admin {
   private String userName;
   private String password;
-
+  private String salt;
   public Admin() {
   }
 
@@ -30,5 +30,13 @@ public class Admin {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getSalt() {
+    return salt;
+  }
+
+  public void setSalt(String salt) {
+    this.salt = salt;
   }
 }

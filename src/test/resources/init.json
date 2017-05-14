@@ -15,7 +15,7 @@
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
-      "arrivalCity": "Beiijing",
+      "arrivalCity": "Beijing",
       "departureDate": "2017-05-11",
       "price": 120,
       "seatCapacity": 120
@@ -37,7 +37,7 @@
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
-      "arrivalCity": "Beiijing",
+      "arrivalCity": "Beijing",
       "departureDate": "2017-05-12",
       "price": 120,
       "seatCapacity": 120
@@ -59,7 +59,7 @@
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
-      "arrivalCity": "Beiijing",
+      "arrivalCity": "Beijing",
       "departureDate": "2017-05-13",
       "price": 120,
       "seatCapacity": 120
@@ -70,7 +70,7 @@
       "startTime": "10:00:00",
       "arrivalTime": "11:00:00",
       "startCity": "Shenzhen",
-      "arrivalCity": "Beiijing",
+      "arrivalCity": "Beijing",
       "departureDate": "2017-05-13",
       "price": 120,
       "seatCapacity": 120

@@ -2,6 +2,7 @@
   "reply":{
     "appInitFail":"程序初始化失败",
     "appTimeFormatError":"时间格式不对，应为：HH:mm:ss",
+    "appInputInvalidate":"输入格式不合法，请重新输入",
     "flightFlightIDEmpty":"航班号为空",
     "flightFlightSerialEmpty":"航班序列号为空",
     "flightStartCityEmpty":"起飞城市为空",
@@ -25,16 +26,8 @@
     "passengerPasswordEmpty":"密码为空",
     "passengerAuthenticateFailed":"登录失败，用户名或者密码错误",
     "adminUserNameEmpty":"管理员用户名为空",
-    "adminUserNameExisted":"管理员用户名已存在"
-  },
-  "prompt":{
-    "adminLogin":{
-      "cmd":1,
-      "prompt":"管理员登录"
-    },
-    "passengerLogin":{
-      "cmd":2,
-      "prompt":"乘客登录"
-    }
+    "adminUserNameExisted":"管理员用户名已存在",
+    "adminUserNameNoExist":"管理员用户名不存在",
+    "adminAuthenticateFail":"用户名或密码错误，登录失败"
   }
 }

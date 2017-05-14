@@ -31,7 +31,7 @@ public class OrderAspect {
 
   @Before("validateOrderAtReservePointcut(com.airline.bean.Order) && args(order)")
   public void validateOrderAtReserve(JoinPoint joinPoint, Order order) {
-    DataSource dataSource = ((OrderService) joinPoint.getThis()).getDataSource();
+    DataSource dataSource = ((OrderService)joinPoint.getTarget()).getDataSource();
     OperationResult<Flight> res = isFlightExist(dataSource, order.getFlightSerial());
     if (!res.isStatus()) {
       dataSource.setOrderCheck(Operation.fail(reply.getFlightNoFlight()));
@@ -55,7 +55,7 @@ public class OrderAspect {
 
   @Before("payOrderPointcut(com.airline.bean.Order) && args(order)")
   public void validateOrderBeforePay(JoinPoint joinPoint, Order order) {
-    DataSource dataSource = ((OrderService) joinPoint.getThis()).getDataSource();
+    DataSource dataSource = ((OrderService)joinPoint.getTarget()).getDataSource();
     OperationResult<Flight> res = isFlightExist(dataSource, order.getFlightSerial());
     if (!res.isStatus()) {
       dataSource.setOrderCheck(Operation.fail(reply.getFlightNoFlight()));
@@ -68,7 +68,7 @@ public class OrderAspect {
 
   @After("payOrderPointcut(com.airline.bean.Order) && args(order)")
   public void processAfterPaid(JoinPoint joinPoint, Order order) {
-    DataSource dataSource = ((OrderService) joinPoint.getThis()).getDataSource();
+    DataSource dataSource = ((OrderService)joinPoint.getTarget()).getDataSource();
     OperationResult<Flight> res = isFlightExist(dataSource, order.getFlightSerial());
     if (!res.isStatus()) {
       return;

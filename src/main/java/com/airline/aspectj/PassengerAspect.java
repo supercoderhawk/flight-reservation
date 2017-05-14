@@ -26,7 +26,7 @@ public class PassengerAspect {
 
   @Before("createPassengerPointcut(com.airline.bean.Passenger) && args(passenger)")
   public void validateCreatePassenger(JoinPoint joinPoint, Passenger passenger) {
-    DataSource dataSource = ((PassengerService) joinPoint.getThis()).getDataSource();
+    DataSource dataSource = ((PassengerService)joinPoint.getTarget()).getDataSource();
     if (StringUtils.isEmpty(passenger.getRealName())) {
       dataSource.setPassengerCheck(Operation.fail(reply.getPassengerNameEmpty()));
     }
@@ -39,7 +39,7 @@ public class PassengerAspect {
 
   @Before("commonPointcut(com.airline.bean.Passenger) && args(passenger)")
   public void validateAll(JoinPoint joinPoint, Passenger passenger) {
-    DataSource dataSource = ((PassengerService) joinPoint.getThis()).getDataSource();
+    DataSource dataSource = ((PassengerService)joinPoint.getTarget()).getDataSource();
     if (StringUtils.isEmpty(passenger.getIdentityID()) || passenger.getIdentityID().length() != 8) {
       dataSource.setPassengerCheck(Operation.fail(reply.getPassengerIdentityLengthError()));
     } else if (StringUtils.isEmpty(passenger.getPassword())) {

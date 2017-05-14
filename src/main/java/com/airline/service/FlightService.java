@@ -28,6 +28,8 @@ public class FlightService extends FlightDao {
 
   public OperationResult<Flight> createFlight(Flight flight){
     OperationResult<Object> checkRes = dataSource.getModifyFlight();
+    //System.out.println(dataSource);
+    //System.out.println("c:"+checkRes);
     if(!checkRes.isStatus()){
       return Operation.fail(checkRes.getMsg());
     }

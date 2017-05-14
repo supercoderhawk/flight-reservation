@@ -46,7 +46,7 @@ public class FlightAspect {
   @Before("validatePoint(com.airline.bean.Flight) && args(flight)")
   public void validateFlight(JoinPoint joinPoint, Flight flight) {
     ValidateFunction func = null;
-    DataSource dataSource = ((FlightService) joinPoint.getThis()).getDataSource();
+    DataSource dataSource = ((FlightService)joinPoint.getTarget()).getDataSource();
     if (StringUtils.isEmpty(flight.getFlightID())) {
       dataSource.setModifyFlight(Operation.fail(reply.getFlightFlightIDEmpty()));
       return;
@@ -61,6 +61,7 @@ public class FlightAspect {
       func = ValidateFunction.UPDATE;
     } else {
       dataSource.setModifyFlight(Operation.fail(reply.getFlightFunctionInvokeError()));
+      return;
     }
 
     Optional<String> startTime = Optional.ofNullable(flight.getStartTime());
@@ -88,6 +89,7 @@ public class FlightAspect {
         return;
       } else if (StringUtils.isEmpty(flight.getArrivalCity())) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightArrivalCityEmpty()));
+        return;
       }
       Integer seats = flight.getSeatCapacity();
       if (seats != null) {
@@ -110,6 +112,8 @@ public class FlightAspect {
       }
     }
     dataSource.setModifyFlight(Operation.success());
+    //System.out.println(Operation.success());
+    //System.out.println("as"+dataSource.getModifyFlight());
   }
 
   @Pointcut("execution(* com.airline.service.FlightService.*(..))")
@@ -118,7 +122,7 @@ public class FlightAspect {
 
   @Before("updateStatusPoint()")
   public void updateFlightStatus(JoinPoint joinPoint) {
-    DataSource dataSource = ((FlightService) joinPoint.getThis()).getDataSource();
+    DataSource dataSource = ((FlightService)joinPoint.getTarget()).getDataSource();
     for (Flight flight : dataSource.getFlights()) {
       if (flight.getFlightStatus() == Constant.FlightStatus.AVAILABLE && util.isTimeToTerminate(flight.getStartTime())) {
         flight.setFlightStatus(Constant.FlightStatus.TERMINATE);
