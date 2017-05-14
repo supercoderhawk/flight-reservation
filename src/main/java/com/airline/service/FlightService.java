@@ -3,6 +3,7 @@ package com.airline.service;
 import com.airline.DataSource;
 import com.airline.bean.Flight;
 import com.airline.bean.OperationResult;
+import com.airline.bean.Order;
 import com.airline.dao.FlightDao;
 import com.airline.utils.Constant.FlightStatus;
 import com.airline.utils.Constant.QueryFlightStrategy;
@@ -80,6 +81,20 @@ public class FlightService extends FlightDao {
     }
 
     return Operation.success(flight);
+  }
+
+  void addPassengerToFlight(Order order){
+    Flight flight = getFlightBySerial(order.getFlightSerial());
+    flight.getPassengerIDs().add(order.getPassengerID());
+    flight.setCurrentPassengers(flight.getCurrentPassengers()+1);
+    flight.getFreeSeats().remove(order.getSeat());
+  }
+
+  void removePassengerFromFlight(Order order){
+    Flight flight = getFlightBySerial(order.getFlightSerial());
+    flight.getPassengerIDs().remove(order.getPassengerID());
+    flight.setCurrentPassengers(flight.getCurrentPassengers()-1);
+    flight.getFreeSeats().add(order.getSeat());
   }
 
   public void publishAllFlights(){
