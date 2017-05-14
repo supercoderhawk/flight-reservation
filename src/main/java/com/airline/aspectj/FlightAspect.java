@@ -87,6 +87,12 @@ public class FlightAspect {
       }else if(StringUtils.isEmpty(flight.getArrivalCity())){
         dataSource.setModifyFlight(Operation.fail(reply.getFlightArrivalCityEmpty()));
       }
+      Integer seats = flight.getSeatCapacity();
+      if(seats!=null){
+        for(int i = 0; i<seats;i++){
+          flight.getFreeSeats().add(String.valueOf(i));
+        }
+      }
     }
 
     if(func == ValidateFunction.UPDATE){
