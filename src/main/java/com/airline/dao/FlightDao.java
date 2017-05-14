@@ -16,9 +16,7 @@ public class FlightDao extends BaseDao {
   }
 
   protected void addFlight(Flight flight) {
-    dataSource.getFlights().add(new Flight(flight.getFlightID(), flight.getFlightSerial(), flight.getStartTime(),
-                                           flight.getArrivalTime(), flight.getStartCity(), flight.getArrivalCity(),
-                                           flight.getDepartureDate(), flight.getPrice(), flight.getSeatCapacity()));
+    dataSource.getFlights().add(new Flight(flight));
   }
 
   protected ArrayList<Flight> getFlightByID(String flightID) {
@@ -34,11 +32,6 @@ public class FlightDao extends BaseDao {
       }
     }
     return null;
-  }
-
-  protected void updateFlightInfo(Flight flight) {
-    Flight oldFlight = getFlightBySerial(flight.getFlightSerial());
-    oldFlight.setArrivalCity(flight.getArrivalCity());
   }
 
   protected void removeFlightBySerial(String flightSerial) {
