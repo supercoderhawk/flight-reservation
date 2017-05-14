@@ -3,6 +3,8 @@ package com.airline.bean;
 import com.airline.utils.Constant.FlightStatus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by airline on 2017/5/10.
@@ -17,12 +19,15 @@ public class Flight {
   private String arrivalCity;
   private String departureDate;
   private Integer price;
-  private Integer currentPassengers;
+  private Integer currentPassengers = 0;
   private Integer seatCapacity;
-  private FlightStatus flightStatus;
-  private ArrayList<Integer> passengerIDs;
+  private FlightStatus flightStatus = FlightStatus.UNPUBLISHED;
+  private ArrayList<Integer> passengerIDs = new ArrayList<>();
+  private Map<Integer,String> seatArrange = new HashMap<>();
+  private ArrayList<String> freeSeats = new ArrayList<>();
 
-  public Flight(String flightID, String flightSerial,String startTime, String arrivalTime, String startCity, String arrivalCity, String departureDate, Integer price, Integer seatCapacity) {
+
+  public Flight(String flightID, String flightSerial,String startTime, String arrivalTime, String startCity, String arrivalCity, String departureDate, Integer price, Integer seatCapacity,ArrayList<String> freeSeats) {
     this.flightID = flightID;
     this.flightSerial = flightSerial;
     this.startTime = startTime;
@@ -32,14 +37,27 @@ public class Flight {
     this.departureDate = departureDate;
     this.price = price;
     this.seatCapacity = seatCapacity;
-    this.flightStatus = FlightStatus.UNPUBLISHED;
-    currentPassengers = 0;
-    passengerIDs = new ArrayList<>();
+    this.freeSeats = freeSeats;
   }
 
   public Flight() {
-    this.flightStatus = FlightStatus.UNPUBLISHED;
-    passengerIDs = new ArrayList<>();
+  }
+
+  public Flight(Flight flight){
+    this.flightID = flight.getFlightID();
+    this.flightSerial = flight.getFlightSerial();
+    this.startTime = flight.getStartTime();
+    this.arrivalTime = flight.getArrivalTime();
+    this.startCity = flight.getStartCity();
+    this.arrivalCity = flight.getArrivalCity();
+    this.departureDate = flight.getDepartureDate();
+    this.price = flight.getPrice();
+    this.currentPassengers = flight.getCurrentPassengers();
+    this.seatCapacity = flight.getSeatCapacity();
+    this.flightStatus = flight.getFlightStatus();
+    this.passengerIDs = flight.getPassengerIDs();
+    this.seatArrange = flight.getSeatArrange();
+    this.freeSeats = flight.getFreeSeats();
   }
 
   public String getFlightID() {
@@ -136,5 +154,21 @@ public class Flight {
 
   public void setPassengerIDs(ArrayList<Integer> passengerIDs) {
     this.passengerIDs = passengerIDs;
+  }
+
+  public Map<Integer, String> getSeatArrange() {
+    return seatArrange;
+  }
+
+  public void setSeatArrange(Map<Integer, String> seatArrange) {
+    this.seatArrange = seatArrange;
+  }
+
+  public ArrayList<String> getFreeSeats() {
+    return freeSeats;
+  }
+
+  public void setFreeSeats(ArrayList<String> freeSeats) {
+    this.freeSeats = freeSeats;
   }
 }

@@ -2,37 +2,50 @@ package com.airline.bean;
 
 import com.airline.utils.Constant.OrderStatus;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by airline on 2017/5/10.
  * 订单对象
  */
 public class Order {
-  private int passengerID;
+  private Long orderID;
+  private Integer passengerID;
   private String seat;
-  private Flight flight;
-  private Date createDate;
+  private String flightSerial;
+  private LocalDateTime createDate;
   private OrderStatus orderStatus;
   private String remark;
 
   public Order() {
   }
 
-  public Order(int passengerID, String seat, Flight flight, Date createDate, OrderStatus orderStatus, String remark) {
+  public Order(Order order){
+    this.orderID = order.getOrderID();
+    this.passengerID = order.getPassengerID();
+    this.seat = order.getSeat();
+    this.flightSerial = order.getFlightSerial();
+    this.createDate = order.getCreateDate();
+    this.orderStatus = order.getOrderStatus();
+    this.remark = order.getRemark();
+  }
+
+  public Order(Long orderID,Integer passengerID, String seat, String flightSerial,
+               LocalDateTime createDate, OrderStatus orderStatus, String remark) {
+    this.orderID = orderID;
     this.passengerID = passengerID;
     this.seat = seat;
-    this.flight = flight;
+    this.flightSerial = flightSerial;
     this.createDate = createDate;
     this.orderStatus = orderStatus;
     this.remark = remark;
   }
 
-  public int getPassengerID() {
+  public Integer getPassengerID() {
     return passengerID;
   }
 
-  public void setPassengerID(int passengerID) {
+  public void setPassengerID(Integer passengerID) {
     this.passengerID = passengerID;
   }
 
@@ -44,19 +57,19 @@ public class Order {
     this.seat = seat;
   }
 
-  public Flight getFlight() {
-    return flight;
+  public String getFlightSerial() {
+    return flightSerial;
   }
 
-  public void setFlight(Flight flight) {
-    this.flight = flight;
+  public void setFlightSerial(String flightSerial) {
+    this.flightSerial = flightSerial;
   }
 
-  public Date getCreateDate() {
+  public LocalDateTime getCreateDate() {
     return createDate;
   }
 
-  public void setCreateDate(Date createDate) {
+  public void setCreateDate(LocalDateTime createDate) {
     this.createDate = createDate;
   }
 
@@ -75,4 +88,13 @@ public class Order {
   public void setRemark(String remark) {
     this.remark = remark;
   }
+
+  public Long getOrderID() {
+    return orderID;
+  }
+
+  public void setOrderID(Long orderID) {
+    this.orderID = orderID;
+  }
+
 }

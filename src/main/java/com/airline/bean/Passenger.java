@@ -7,29 +7,37 @@ import java.util.ArrayList;
  * 乘客信息对象
  */
 public class Passenger {
-  private int passengerID;
+  private Integer passengerID;
   private String realName;
   private String identityID;
   private String password;
-  private String admin;
-  private ArrayList<Order> orderList;
+  private String salt;
+  private ArrayList<Order> orderList = new ArrayList<>();
 
-  public Passenger(int passengerID, String realName, String identityID, String password,String admin) {
+  public Passenger(Integer passengerID, String realName, String identityID, String password,String salt) {
     this.passengerID = passengerID;
     this.realName = realName;
     this.identityID = identityID;
     this.password = password;
-    this.admin = admin;
+    this.salt = salt;
   }
 
+  public Passenger(Passenger passenger){
+    this.passengerID = passenger.getPassengerID();
+    this.realName = passenger.getRealName();
+    this.identityID = passenger.getIdentityID();
+    this.password = passenger.getPassword();
+    this.salt = passenger.getSalt();
+    this.orderList = passenger.getOrderList();
+  }
   public Passenger() {
   }
 
-  public int getPassengerID() {
+  public Integer getPassengerID() {
     return passengerID;
   }
 
-  public void setPassengerID(int passengerID) {
+  public void setPassengerID(Integer passengerID) {
     this.passengerID = passengerID;
   }
 
@@ -65,11 +73,11 @@ public class Passenger {
     this.orderList = orderList;
   }
 
-  public String getAdmin() {
-    return admin;
+  public String getSalt() {
+    return salt;
   }
 
-  public void setAdmin(String admin) {
-    this.admin = admin;
+  public void setSalt(String salt) {
+    this.salt = salt;
   }
 }
