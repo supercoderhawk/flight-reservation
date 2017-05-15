@@ -7,9 +7,37 @@
     }
   ],
   "passengers": [
+    {
+      "passengerID":"12345678",
+      "realName":"测试用户",
+      "identityID":"12345678",
+      "password":"5061daa41cadc005f0ee9b68e82ef7c9df9efbb66ed2a634c39634d3dfaae286",
+      "salt":"UVNQy6jyhgrh77lp",
+      "orderList":[
+        {
+          "orderID":"1",
+          "passengerID":"12345678",
+          "seat":"1",
+          "flightSerial":"1",
+          "createDate":"2017-05-15 10:10:10",
+          "orderStatus":"unpaid"
+        }
+      ]
+    }
   ],
   "citys":["Shenzhen","Beijing","Shanghai"],
   "flights": [
+    {
+      "flightID": "SZ0001",
+      "flightSerial":"1",
+      "startTime": "10:00:00",
+      "arrivalTime": "11:00:00",
+      "startCity": "Shenzhen",
+      "arrivalCity": "Beiijing",
+      "departureDate": "2017-06-18",
+      "price": 120,
+      "seatCapacity": 120
+    },
     {
       "flightID": "SZ1001",
       "flightSerial":"AAA170511-SZ1001",

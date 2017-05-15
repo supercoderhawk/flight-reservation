@@ -34,7 +34,10 @@ public class PassengerService extends PassengerDao {
     if(!res.isStatus()){
       return Operation.fail(res.getMsg());
     }
-    Passenger fullPassenger = getPassengerByID(passenger.getPassengerID());
+    Passenger fullPassenger = getPassengerByID(passenger.getIdentityID());
+    if(fullPassenger == null){
+      return Operation.fail(reply.getPassengerNotExist());
+    }
     String pwd = Util.encrypt(fullPassenger.getIdentityID()+passenger.getPassword()+fullPassenger.getSalt());
     if(fullPassenger.getPassword().equals(pwd)){
       return Operation.success(fullPassenger);

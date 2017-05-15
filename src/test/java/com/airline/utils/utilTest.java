@@ -18,6 +18,22 @@ import static org.junit.Assert.assertNotEquals;
  */
 public class utilTest {
   @Test
+  public void encryptRawPassword() throws Exception {
+    String userName = "root";
+    String password = "123456";
+    String salt = "Dy7Rd6lQxJnFNG7c";
+    String encrypted = "f7ae18e37b3c6778ee780877709874f5e7c4348952acbf20eef3b560e16fc8ad";
+    assertEquals(Util.encryptRawPassword(userName,password,salt),encrypted);
+    //userName = "测试";
+    String id = "12345678";
+    password = "123456";
+    //salt = RandomStringUtils.randomAlphanumeric(16);
+    salt = "UVNQy6jyhgrh77lp";
+    //System.out.println(salt);
+    //System.out.println(Util.encryptRawPassword(id,password,salt));
+  }
+
+  @Test
   public void input2Object() throws Exception {
     String input1 = "userName:xyb,password:123";
     OperationResult<Admin> admin = Util.input2Object(input1, Admin.class);

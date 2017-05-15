@@ -16,9 +16,9 @@ public class PassengerDao extends BaseDao {
     dataSource.getPassengers().add(passenger);
   }
 
-  protected Passenger getPassengerByID(Integer passengerID){
+  protected Passenger getPassengerByID(String passengerID){
     for(Passenger passenger:dataSource.getPassengers()){
-      if(passenger.getPassengerID().equals(passengerID)){
+      if(passenger.getIdentityID().equals(passengerID)){
         return passenger;
       }
     }

@@ -23,11 +23,11 @@ public class Flight {
   private Integer seatCapacity;
   private FlightStatus flightStatus = FlightStatus.UNPUBLISHED;
   private ArrayList<Integer> passengerIDs = new ArrayList<>();
-  private Map<Integer,String> seatArrange = new HashMap<>();
+  private Map<String, Integer> seatArrange = new HashMap<>();
   private ArrayList<String> freeSeats = new ArrayList<>();
 
 
-  public Flight(String flightID, String flightSerial,String startTime, String arrivalTime, String startCity, String arrivalCity, String departureDate, Integer price, Integer seatCapacity,ArrayList<String> freeSeats) {
+  public Flight(String flightID, String flightSerial, String startTime, String arrivalTime, String startCity, String arrivalCity, String departureDate, Integer price, Integer seatCapacity, ArrayList<String> freeSeats) {
     this.flightID = flightID;
     this.flightSerial = flightSerial;
     this.startTime = startTime;
@@ -43,8 +43,8 @@ public class Flight {
   public Flight() {
   }
 
-  public Flight(String flightID,String flightSerial,String startTime,String arrivalTime,String startCity,String
-      arrivalCity,String departureDate,Integer price,Integer seatCapacity){
+  public Flight(String flightID, String flightSerial, String startTime, String arrivalTime, String startCity, String
+      arrivalCity, String departureDate, Integer price, Integer seatCapacity) {
     this.flightID = flightID;
     this.flightSerial = flightSerial;
     this.startTime = startTime;
@@ -55,7 +55,8 @@ public class Flight {
     this.price = price;
     this.seatCapacity = seatCapacity;
   }
-  public Flight(Flight flight){
+
+  public Flight(Flight flight) {
     this.flightID = flight.getFlightID();
     this.flightSerial = flight.getFlightSerial();
     this.startTime = flight.getStartTime();
@@ -168,11 +169,11 @@ public class Flight {
     this.passengerIDs = passengerIDs;
   }
 
-  public Map<Integer, String> getSeatArrange() {
+  public Map<String, Integer> getSeatArrange() {
     return seatArrange;
   }
 
-  public void setSeatArrange(Map<Integer, String> seatArrange) {
+  public void setSeatArrange(Map<String, Integer> seatArrange) {
     this.seatArrange = seatArrange;
   }
 

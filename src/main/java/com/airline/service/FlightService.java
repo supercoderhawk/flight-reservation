@@ -28,8 +28,6 @@ public class FlightService extends FlightDao {
 
   public OperationResult<Flight> createFlight(Flight flight){
     OperationResult<Object> checkRes = dataSource.getModifyFlight();
-    //System.out.println(dataSource);
-    //System.out.println("c:"+checkRes);
     if(!checkRes.isStatus()){
       return Operation.fail(checkRes.getMsg());
     }
@@ -97,6 +95,7 @@ public class FlightService extends FlightDao {
     flight.getPassengerIDs().remove(order.getPassengerID());
     flight.setCurrentPassengers(flight.getCurrentPassengers()-1);
     flight.getFreeSeats().add(order.getSeat());
+    flight.getSeatArrange().remove(order.getSeat());
   }
 
   public void publishAllFlights(){

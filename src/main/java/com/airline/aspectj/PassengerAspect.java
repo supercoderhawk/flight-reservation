@@ -42,8 +42,10 @@ public class PassengerAspect {
     DataSource dataSource = ((PassengerService)joinPoint.getTarget()).getDataSource();
     if (StringUtils.isEmpty(passenger.getIdentityID()) || passenger.getIdentityID().length() != 8) {
       dataSource.setPassengerCheck(Operation.fail(reply.getPassengerIdentityLengthError()));
+      return;
     } else if (StringUtils.isEmpty(passenger.getPassword())) {
       dataSource.setPassengerCheck(Operation.fail(reply.getPassengerPasswordEmpty()));
+      return;
     }
     dataSource.setPassengerCheck(Operation.success());
   }

@@ -4,6 +4,7 @@ import com.airline.DataSource;
 import com.airline.bean.Flight;
 import com.airline.bean.OperationResult;
 import com.airline.bean.Order;
+import com.airline.bean.Passenger;
 import com.airline.service.OrderService;
 import com.airline.utils.Constant;
 import com.airline.utils.Constant.FlightStatus;
@@ -17,6 +18,7 @@ import org.aspectj.lang.annotation.Pointcut;
 
 import java.time.LocalDateTime;
 
+import static com.airline.utils.Constant.flightStatusMap;
 import static com.airline.utils.Constant.reply;
 
 /**
@@ -32,6 +34,11 @@ public class OrderAspect {
   @Before("validateOrderAtReservePointcut(com.airline.bean.Order) && args(order)")
   public void validateOrderAtReserve(JoinPoint joinPoint, Order order) {
     DataSource dataSource = ((OrderService)joinPoint.getTarget()).getDataSource();
+    if(order == null ){
+      dataSource.setOrderCheck(Operation.fail(reply.getAppParameterEmpty()));
+      return;
+    }
+    order.setOrderStatus(Constant.OrderStatus.UNPAID);
     OperationResult<Flight> res = isFlightExist(dataSource, order.getFlightSerial());
     if (!res.isStatus()) {
       dataSource.setOrderCheck(Operation.fail(reply.getFlightNoFlight()));
@@ -39,10 +46,19 @@ public class OrderAspect {
     }
     Flight flight = res.getData();
     if (flight.getFlightStatus() != FlightStatus.AVAILABLE) {
-      dataSource.setOrderCheck(Operation.fail(reply.getOrderFlightCantReserve()));
+      String str = String.format(reply.getOrderFlightCantReserve(),flightStatusMap.get(flight.getFlightStatus()));
+      dataSource.setOrderCheck(Operation.fail(str));
+      order.setOrderStatus(Constant.OrderStatus.FAIL);
       return;
     }
-    order.setOrderStatus(Constant.OrderStatus.UNPAID);
+    OperationResult<Passenger> passRes = isPassengerExist(dataSource,order.getPassengerID());
+    if(!passRes.isStatus()){
+      dataSource.setOrderCheck(Operation.fail(passRes.getMsg()));
+      return;
+    }
+    String seat = flight.getFreeSeats().get(0);
+    order.setSeat(seat);
+    flight.getSeatArrange().put(seat,passRes.getData().getPassengerID());
     LocalDateTime time = LocalDateTime.now();
     order.setCreateDate(time);
     order.setOrderID(Util.generateOrderID(time));
@@ -86,6 +102,18 @@ public class OrderAspect {
       }
     }
     return Operation.fail(reply.getFlightNoFlight());
+  }
+
+  private static OperationResult<Passenger> isPassengerExist(DataSource dataSource,Integer passengerID){
+    if(passengerID == null){
+      return Operation.fail(reply.getPassengerNameEmpty());
+    }
+    for(Passenger passenger:dataSource.getPassengers()){
+      if(passenger.getPassengerID().equals(passengerID)){
+        return Operation.success(passenger);
+      }
+    }
+    return Operation.fail(reply.getPassengerNotExist());
   }
 
 }
