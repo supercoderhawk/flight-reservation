@@ -29,11 +29,22 @@ public class PassengerAspect {
     DataSource dataSource = ((PassengerService)joinPoint.getTarget()).getDataSource();
     if (StringUtils.isEmpty(passenger.getRealName())) {
       dataSource.setPassengerCheck(Operation.fail(reply.getPassengerNameEmpty()));
+      return;
+    }else if (StringUtils.isEmpty(passenger.getPassword())) {
+      dataSource.setPassengerCheck(Operation.fail(reply.getPassengerPasswordEmpty()));
+      return;
+    }else if (StringUtils.isEmpty(passenger.getIdentityID()) || passenger.getIdentityID().length() != 8) {
+      dataSource.setPassengerCheck(Operation.fail(reply.getPassengerIdentityLengthError()));
+      return;
+    }
+    if(isPassengerExist(dataSource,passenger.getIdentityID())){
+      dataSource.setPassengerCheck(Operation.fail(reply.getPassengerIdentityExisted()));
+      return;
     }
     dataSource.setPassengerCheck(Operation.success());
   }
 
-  @Pointcut("execution(* com.airline.service.PassengerService.*(com.airline.bean.Passenger)) && args(passenger)")
+  @Pointcut("execution(* com.airline.service.PassengerService.*(com.airline.bean.Passenger)) && args(passenger) && !execution(* com.airline.service.PassengerService.registerPassenger(com.airline.bean.Passenger))")
   public void commonPointcut(Passenger passenger) {
   }
 
@@ -48,5 +59,14 @@ public class PassengerAspect {
       return;
     }
     dataSource.setPassengerCheck(Operation.success());
+  }
+
+  private static boolean isPassengerExist(DataSource dataSource,String id){
+    for(Passenger passenger:dataSource.getPassengers()){
+      if(passenger.getIdentityID().equals(id)){
+        return true;
+      }
+    }
+    return false;
   }
 }

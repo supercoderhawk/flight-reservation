@@ -7,6 +7,8 @@ import com.airline.utils.Util;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by airline on 2017/5/14.
  * 乘客业务单元测试类
@@ -14,6 +16,8 @@ import org.junit.Test;
 public class PassengerServiceTest {
   private Passenger passenger;
   private PassengerService passengerService;
+  OperationResult<Passenger> res;
+
   @Before
   public void setUp() throws Exception {
     passenger = new Passenger("xyb", "88888888", Util.encrypt("123456"));
@@ -23,13 +27,25 @@ public class PassengerServiceTest {
 
   @Test
   public void registerPassenger() throws Exception {
-    OperationResult<Passenger> res = passengerService.registerPassenger(passenger);
-
-    //System.out.println(res.getMsg());
+    res = passengerService.registerPassenger(passenger);
+    assertEquals(res.isStatus(), true);
+    passenger = new Passenger("aaa", "12345678", Util.encrypt("123"));
+    res = passengerService.registerPassenger(passenger);
+    assertEquals(res.isStatus(), false);
+    passenger.setIdentityID("");
+    res = passengerService.registerPassenger(passenger);
+    assertEquals(res.isStatus(), false);
+    passenger.setIdentityID("12345678");
+    passenger.setPassword("");
+    res = passengerService.registerPassenger(passenger);
+    assertEquals(res.isStatus(), false);
   }
 
   @Test
   public void login() throws Exception {
+    passenger = new Passenger("xyb", "12345678", Util.encrypt("123456"));
+    res = passengerService.login(passenger);
+    assertEquals(res.isStatus(),true);
   }
 
   @Test

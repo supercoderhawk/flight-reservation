@@ -12,6 +12,9 @@ import com.airline.utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,12 +29,14 @@ import static com.airline.utils.Constant.reply;
  */
 
 public class Reservation {
+  private DataSource dataSource;
   private FlightService flightService;
   private PassengerService passengerService;
   private OrderService orderService;
   private AdminService adminService;
 
   public Reservation(DataSource dataSource) {
+    this.dataSource = dataSource;
     flightService = new FlightService(dataSource);
     passengerService = new PassengerService(dataSource);
     orderService = new OrderService(dataSource, flightService, passengerService);
@@ -304,6 +309,8 @@ public class Reservation {
           break;
         case "4":
           break;
+        case "0":
+          break;
         default:
           System.out.println("输入的命令不存在");
       }
@@ -313,7 +320,15 @@ public class Reservation {
 
   public static void main(String[] args) {
     Map<String,String> argsMap = getArgs(args);
-
-    process(init());
+    Reservation reservation = init();
+    String path = System.getProperty("user.dir");
+    System.out.println(path);
+    process(reservation);
+    path += "/data.json";
+    try {
+      Files.write(Paths.get(path), prettyOutput(reservation.dataSource).getBytes());
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

@@ -21,6 +21,10 @@ public class PassengerService extends PassengerDao {
   }
 
   public OperationResult<Passenger> registerPassenger(Passenger passenger) {
+    OperationResult<Object> res = dataSource.getPassengerCheck();
+    if(!res.isStatus()){
+      return Operation.fail(res.getMsg());
+    }
     String salt = RandomStringUtils.randomAlphanumeric(16);
     String pwd = Util.encrypt(passenger.getIdentityID() + passenger.getPassword() + salt);
     passenger.setPassword(pwd);
