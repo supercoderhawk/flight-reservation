@@ -10,8 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -28,10 +28,10 @@ public class Util {
       registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).create();
 
   public static <T> T loadFileToObject(String path, Class<T> c) {
-    if(StringUtils.isEmpty(path)){
+    if (StringUtils.isEmpty(path)) {
       return null;
-    }else if(!path.startsWith("/")){
-      path = "/"+path;
+    } else if (!path.startsWith("/")) {
+      path = "/" + path;
     }
     String data = loadResourceFile(path);
     return gson.fromJson(data, c);
@@ -74,15 +74,6 @@ public class Util {
     return Operation.success(c);
   }
 
-  public static boolean isTimeToTerminate(String timeString) {
-    Optional<LocalTime> time = Optional.ofNullable(parseTime(timeString));
-    if (!time.isPresent()) {
-      return false;
-    }
-    Duration duration = Duration.between(LocalTime.now(), time.get());
-    return duration.toHours() < 2;
-  }
-
   public static LocalTime parseTime(String timeString) {
     LocalTime time = null;
     try {
@@ -110,14 +101,17 @@ public class Util {
     return false;
   }
 
-  public static boolean isStartTimeValidate(String timeString) {
-    LocalTime time = parseTime(timeString);
-    return time != null && Duration.between(LocalTime.now(), time).toHours() >= 2;
+  private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-ddHH:mm:ss");
+
+  public static boolean isStartTimeValidate(String timeString, String dateString) {
+    LocalDateTime time = LocalDateTime.from(formatter.parse(dateString + timeString));
+    return time != null && Duration.between(LocalDateTime.now(), time).toHours() >= 2;
   }
 
-  public static boolean isStartAndArrivalTimeValidate(String startTime, String arrivalTime) {
-    LocalTime start = parseTime(startTime);
-    LocalTime arrival = parseTime(arrivalTime);
+  public static boolean isStartAndArrivalTimeValidate(String startTime, String startDate,
+                                                      String arrivalTime, String arrivalDate) {
+    LocalDateTime start = LocalDateTime.from(formatter.parse(startDate + startTime));
+    LocalDateTime arrival = LocalDateTime.from(formatter.parse(arrivalDate + arrivalTime));
     return start != null && arrival != null && !Duration.between(start, arrival).isNegative();
   }
 

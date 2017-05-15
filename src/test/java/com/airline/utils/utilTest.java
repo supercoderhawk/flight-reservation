@@ -49,18 +49,54 @@ public class utilTest {
     assertEquals(admin.isStatus(), false);
   }
 
-  private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+  private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+  private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   @Test
   public void isStartTimeValidate() throws Exception {
+    LocalDateTime time = LocalDateTime.now();
+    LocalDateTime time1 = time.plusHours(5);
+    String startTime = time1.toLocalTime().format(timeFormatter);
+    String startDate = time1.toLocalDate().format(dateFormatter);
+    boolean isValidate = Util.isStartTimeValidate(startTime,startDate);
+    assertEquals(isValidate,true);
+
+    LocalDateTime time2 = time.plusHours(22);
+    startTime = time2.toLocalTime().format(timeFormatter);
+    startDate = time2.toLocalDate().format(dateFormatter);
+    isValidate = Util.isStartTimeValidate(startTime,startDate);
+    assertEquals(isValidate,true);
+
+    LocalDateTime time3 = time.plusHours(1);
+    startTime = time3.toLocalTime().format(timeFormatter);
+    startDate = time3.toLocalDate().format(dateFormatter);
+    isValidate = Util.isStartTimeValidate(startTime,startDate);
+    assertEquals(isValidate,false);
 
   }
 
   @Test
   public void isStartAndArrivalTimeValidate() throws Exception {
-    LocalTime start = LocalTime.now();
-    LocalTime end = LocalTime.now().plusHours(1);
-    //assertEquals(Util.isStartAndArrivalTimeValidate(start.format(formatter), end.format(formatter)), true);
+    LocalDateTime time = LocalDateTime.now();
+    String startTime = time.toLocalTime().format(timeFormatter);
+    String startDate = time.toLocalDate().format(dateFormatter);
+    LocalDateTime time1 = time.plusHours(5);
+    String endTime = time1.format(timeFormatter);
+    String endDate = time1.format(dateFormatter);
+    boolean isValidate = Util.isStartAndArrivalTimeValidate(startTime,startDate,endTime,endDate);
+    assertEquals(isValidate,true);
+
+    LocalDateTime time2 = time.plusHours(22);
+    endTime = time2.format(timeFormatter);
+    endDate = time2.format(dateFormatter);
+    isValidate = Util.isStartAndArrivalTimeValidate(startTime,startDate,endTime,endDate);
+    assertEquals(isValidate,true);
+
+    LocalDateTime time3 = time.minusMinutes(10);
+    endTime = time3.format(timeFormatter);
+    endDate = time3.format(dateFormatter);
+    isValidate = Util.isStartAndArrivalTimeValidate(startTime,startDate,endTime,endDate);
+    assertEquals(isValidate,false);
 
   }
 
@@ -108,23 +144,13 @@ public class utilTest {
     assertEquals(Util.isTimeValidate(str2), false);
   }
 
-
-  @Test
-  public void isTimeToTerminate() throws Exception {
-    String timeString1 = LocalTime.now().plusHours(3).format(formatter);
-    String timeString2 = LocalTime.now().plusHours(1).format(formatter);
-    //assertEquals(Util.isTimeToTerminate(timeString1),false);
-    //assertEquals(Util.isTimeToTerminate(timeString2),true);
-
-  }
-
   @Test
   public void parseTime() throws Exception {
     String timeString1 = "10:10:71";
     LocalTime t = LocalTime.now();
     t = t.minusNanos(t.getNano());
     assertEquals(Util.parseTime(timeString1), null);
-    assertEquals(Util.parseTime(t.format(formatter)), t);
+    assertEquals(Util.parseTime(t.format(timeFormatter)), t);
   }
 
 }
