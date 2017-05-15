@@ -1,9 +1,16 @@
 language: java
 jdk:
-  - oraclejdk8
-sudo: false # faster builds
-
-script: "mvn cobertura:cobertura"
-
+- oraclejdk8
+sudo: false
+script: mvn cobertura:cobertura
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
+deploy:
+  provider: releases
+  api_key:
+    secure: HXwznXIfdOqUFIe+r7BrZ+zv6OkoyRl50ngJ5MTr47HLV6xE3xYFv7z2YlH0jpnyjvavcanxJWiLa8/27F3C/ZuQ5gihTXqnwQZyBXn6qSMMkQokEMTjhcW4um+KQKvqdzSVq2U2ddMHFNNXDxL6I0Irs9xGNGciKPlmNOh1NSTNmYT79Zi8Q8mqlvUyIrM/seblM8GjiZH/QTtve/PW5jjepoc+v6W7D7jVle4c4pv/FnH+V1ZQ2r8ZaTY/+CG4jNzsbZRc6antyUjGQxJvApwoRR81XergTxAVe1v9YeqL0ZG7rXzAZz+FVMbpTO9ZufIusLGTUrCU7jWiJ1sewrYaXAm/zZV81eGNpFQV7ssM4LxANAdxI+A5+bpp/cR4FBN7CK08i7VRBn9CmSQ5KSHsc+p1m9hDQTcNJkdUyu4sydDw1y9tuw2B0gNr2rNSIkvPRjtO0WTQSskd1UpItMvU6+pOdnkLgqQz0+CSVYtqh4vymisdbXAkAOcYMiCRj4zJe9yD7s5oY0rqUqga3O/GbD/OkUqbnCAQu4bSqNncxeS21fJywnFY5BtiUvvO6T7DP8g3TJmfwT/gc6IAlzt7HvMSw3bSKzQ/kEOSiI75i7KrSCJ7g2/HtRXNLRRvHcI7gO8A/oIG8vU7Xb5ZCzjwSV1X3tOOVwvo7IYeii0=
+  skip_cleanup: true
+  file: target/flight-reservation-1.0.0.jar
+  on:
+    repo: supercoderhawk/flight-reservation
+    tags: true
