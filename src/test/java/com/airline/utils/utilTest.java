@@ -1,8 +1,8 @@
 package com.airline.utils;
 
 import com.airline.DataSource;
-import org.junit.After;
-import org.junit.Before;
+import com.airline.bean.Admin;
+import com.airline.bean.OperationResult;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -17,16 +17,23 @@ import static org.junit.Assert.assertNotEquals;
  * 工具类单元测试
  */
 public class utilTest {
-
-  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-  @Before
-  public void setUp() throws Exception {
+  @Test
+  public void input2Object() throws Exception {
+    String input1 = "userName:xyb,password:123";
+    OperationResult<Admin> admin = Util.input2Object(input1, Admin.class);
+    assertEquals(admin.isStatus(), true);
+    assertEquals(admin.getData().getPassword(), "123");
+    assertEquals(admin.getData().getUserName(), "xyb");
+    String input2 = "user:xyb,password:123";
+    admin = Util.input2Object(input2, Admin.class);
+    assertEquals(admin.isStatus(), true);
+    assertEquals(admin.getData().getUserName(), null);
+    String input3 = "abcdefg";
+    admin = Util.input2Object(input3, Admin.class);
+    assertEquals(admin.isStatus(), false);
   }
 
-  @After
-  public void tearDown() throws Exception {
-  }
+  private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
   @Test
   public void isStartTimeValidate() throws Exception {
@@ -44,11 +51,11 @@ public class utilTest {
   @Test
   public void isDateValidate() throws Exception {
     String date1 = "2017-05-14";
-    assertEquals(Util.isDateValidate(date1),true);
+    assertEquals(Util.isDateValidate(date1), true);
     String date2 = "20170514";
-    assertEquals(Util.isDateValidate(date2),false);
+    assertEquals(Util.isDateValidate(date2), false);
     String date3 = "2017-13-30";
-    assertEquals(Util.isDateValidate(date3),false);
+    assertEquals(Util.isDateValidate(date3), false);
   }
 
   @Test
@@ -58,8 +65,8 @@ public class utilTest {
 
   @Test
   public void generateOrderID() throws Exception {
-    assertNotEquals(Util.generateOrderID(LocalDateTime.now()),null);
-    assertEquals(String.valueOf(Util.generateOrderID(LocalDateTime.now())).length(),10);
+    assertNotEquals(Util.generateOrderID(LocalDateTime.now()), null);
+    assertEquals(String.valueOf(Util.generateOrderID(LocalDateTime.now())).length(), 10);
   }
 
   @Test

@@ -3,7 +3,7 @@ package com.airline.service;
 import com.airline.DataSource;
 import com.airline.bean.Flight;
 import com.airline.bean.OperationResult;
-import com.airline.utils.util;
+import com.airline.utils.Util;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class FlightServiceTest {
 
   @Before
   public void setUp() throws Exception {
-    DataSource dataSource = util.loadFileToObject("init.json", DataSource.class);
+    DataSource dataSource = Util.loadFileToObject("init.json", DataSource.class);
     flightService = new FlightService(dataSource);
     flight = new Flight("BJ1001", "AAA170512-BJ1001", "10:00:00", "12:00:00", "Beijing", "Hangzhou", "2017-05-13", 10, 10);
   }
