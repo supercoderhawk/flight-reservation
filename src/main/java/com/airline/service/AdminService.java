@@ -6,6 +6,7 @@ import com.airline.bean.OperationResult;
 import com.airline.dao.AdminDao;
 import com.airline.utils.Operation;
 import com.airline.utils.Util;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
 import static com.airline.utils.Constant.reply;
@@ -24,18 +25,26 @@ public class AdminService extends AdminDao {
     String userName = admin.getUserName();
     if (StringUtils.isEmpty(userName)) {
       return Operation.fail(reply.getAdminUserNameEmpty());
+    }else if(StringUtils.isEmpty(admin.getPassword())){
+      return Operation.fail(reply.getAdminPasswordEmpty());
     }
     Admin oldAdmin = getAdminByName(admin.getUserName());
     if (oldAdmin != null) {
       return Operation.fail(reply.getAdminUserNameExisted());
     }
-    return Operation.success(admin);
+    String salt = RandomStringUtils.randomAlphanumeric(16);
+    admin.setPassword(Util.encrypt(admin.getUserName()+admin.getPassword()+salt));
+    admin.setSalt(salt);
+    createAdmin(admin);
+    return Operation.success(new Admin(admin));
   }
 
   public OperationResult<Admin> login(Admin admin) {
     String userName = admin.getUserName();
     if (StringUtils.isEmpty(userName)) {
       return Operation.fail(reply.getAdminUserNameEmpty());
+    }else if(StringUtils.isEmpty(admin.getPassword())){
+      return Operation.fail(reply.getAdminPasswordEmpty());
     }
     Admin trueAdmin = getAdminByName(admin.getUserName());
     if (trueAdmin == null) {
