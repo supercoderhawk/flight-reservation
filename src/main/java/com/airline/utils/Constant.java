@@ -40,7 +40,7 @@ public class Constant {
 
   public static Map<FlightStatus,String> flightStatusMap = new HashMap<>();
 
-  public static final Reply reply = util.loadFileToObject("const.json", Const.class).getReply();
+  public static final Reply reply = Util.loadFileToObject("const.json", Const.class).getReply();
   static {
     orderStatusMap.put(OrderStatus.PAID,"已支付");
     orderStatusMap.put(OrderStatus.UNPAID,"未支付");

@@ -6,7 +6,7 @@ import com.airline.bean.Order;
 import com.airline.bean.Passenger;
 import com.airline.dao.PassengerDao;
 import com.airline.utils.Operation;
-import com.airline.utils.util;
+import com.airline.utils.Util;
 import org.apache.commons.lang.RandomStringUtils;
 
 import static com.airline.utils.Constant.reply;
@@ -22,7 +22,7 @@ public class PassengerService extends PassengerDao {
 
   public OperationResult<Passenger> registerPassenger(Passenger passenger) {
     String salt = RandomStringUtils.randomAlphanumeric(16);
-    String pwd = util.encrypt(passenger.getIdentityID() + passenger.getPassword() + salt);
+    String pwd = Util.encrypt(passenger.getIdentityID() + passenger.getPassword() + salt);
     passenger.setPassword(pwd);
     passenger.setSalt(salt);
     createPassenger(passenger);
@@ -35,7 +35,7 @@ public class PassengerService extends PassengerDao {
       return Operation.fail(res.getMsg());
     }
     Passenger fullPassenger = getPassengerByID(passenger.getPassengerID());
-    String pwd = util.encrypt(fullPassenger.getIdentityID()+passenger.getPassword()+fullPassenger.getSalt());
+    String pwd = Util.encrypt(fullPassenger.getIdentityID()+passenger.getPassword()+fullPassenger.getSalt());
     if(fullPassenger.getPassword().equals(pwd)){
       return Operation.success(fullPassenger);
     }

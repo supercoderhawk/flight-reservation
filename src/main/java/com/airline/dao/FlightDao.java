@@ -20,7 +20,6 @@ public class FlightDao extends BaseDao {
   }
 
   protected ArrayList<Flight> getFlightByID(String flightID) {
-
     return dataSource.getFlights().stream().filter(f -> f.getFlightID().equals(flightID))
         .collect(Collectors.toCollection(ArrayList::new));
   }

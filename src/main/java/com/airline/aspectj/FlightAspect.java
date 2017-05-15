@@ -5,7 +5,7 @@ import com.airline.bean.Flight;
 import com.airline.service.FlightService;
 import com.airline.utils.Constant;
 import com.airline.utils.Operation;
-import com.airline.utils.util;
+import com.airline.utils.Util;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -75,13 +75,13 @@ public class FlightAspect {
       if (!isNotEmpty) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightParameterEmpty()));
         return;
-      } else if (!util.isTimeValidate(startTime.get())) {
+      } else if (!Util.isTimeValidate(startTime.get())) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightStartTimeError()));
         return;
-      } else if (!util.isTimeValidate(arrivalTime.get())) {
+      } else if (!Util.isTimeValidate(arrivalTime.get())) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightArrivalTimeError()));
         return;
-      } else if (!util.isDateValidate(departureDate.get())) {
+      } else if (!Util.isDateValidate(departureDate.get())) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightDepartureDateError()));
         return;
       } else if (StringUtils.isEmpty(flight.getStartCity())) {
@@ -100,20 +100,18 @@ public class FlightAspect {
     }
 
     if (func == ValidateFunction.UPDATE) {
-      if (startTime.isPresent() && util.isTimeValidate(startTime.get())) {
+      if (startTime.isPresent() && Util.isTimeValidate(startTime.get())) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightParameterEmpty()));
         return;
-      } else if (arrivalTime.isPresent() && !util.isTimeValidate(arrivalTime.get())) {
+      } else if (arrivalTime.isPresent() && !Util.isTimeValidate(arrivalTime.get())) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightStartTimeError()));
         return;
-      } else if (departureDate.isPresent() && !util.isDateValidate(departureDate.get())) {
+      } else if (departureDate.isPresent() && !Util.isDateValidate(departureDate.get())) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightDepartureDateError()));
         return;
       }
     }
     dataSource.setModifyFlight(Operation.success());
-    //System.out.println(Operation.success());
-    //System.out.println("as"+dataSource.getModifyFlight());
   }
 
   @Pointcut("execution(* com.airline.service.FlightService.*(..))")
@@ -124,10 +122,10 @@ public class FlightAspect {
   public void updateFlightStatus(JoinPoint joinPoint) {
     DataSource dataSource = ((FlightService)joinPoint.getTarget()).getDataSource();
     for (Flight flight : dataSource.getFlights()) {
-      if (flight.getFlightStatus() == Constant.FlightStatus.AVAILABLE && util.isTimeToTerminate(flight.getStartTime())) {
+      if (flight.getFlightStatus() == Constant.FlightStatus.AVAILABLE && Util.isTimeToTerminate(flight.getStartTime())) {
         flight.setFlightStatus(Constant.FlightStatus.TERMINATE);
       }
-      if (flight.getFlightStatus() == Constant.FlightStatus.FULL && util.isTimeToTerminate(flight.getStartTime())) {
+      if (flight.getFlightStatus() == Constant.FlightStatus.FULL && Util.isTimeToTerminate(flight.getStartTime())) {
         flight.setFlightStatus(Constant.FlightStatus.TERMINATE);
       }
     }

@@ -8,7 +8,7 @@ import com.airline.service.OrderService;
 import com.airline.utils.Constant;
 import com.airline.utils.Constant.FlightStatus;
 import com.airline.utils.Operation;
-import com.airline.utils.util;
+import com.airline.utils.Util;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -45,7 +45,7 @@ public class OrderAspect {
     order.setOrderStatus(Constant.OrderStatus.UNPAID);
     LocalDateTime time = LocalDateTime.now();
     order.setCreateDate(time);
-    order.setOrderID(util.generateOrderID(time));
+    order.setOrderID(Util.generateOrderID(time));
     dataSource.setOrderCheck(Operation.success(flight));
   }
 

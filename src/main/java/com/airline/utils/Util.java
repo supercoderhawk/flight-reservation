@@ -1,5 +1,6 @@
 package com.airline.utils;
 
+import com.airline.bean.OperationResult;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -14,14 +15,16 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.airline.utils.Constant.reply;
+
 /**
  * Created by airline on 2017/5/11.
  * 工具类，封装一些常用的函数
  */
-public class util {
+public class Util {
+  private static Gson gson = new Gson();
 
   public static <T> T loadFileToObject(String path, Class<T> c) {
-    Gson gson = new Gson();
     String data = loadResourceFile(path);
     return gson.fromJson(data, c);
   }
@@ -35,13 +38,31 @@ public class util {
   private static String loadResourceFile(String path) {
     String data = null;
     try {
-      String fullPath = util.class.getClassLoader().getResource(path).getFile();
+      String fullPath = Util.class.getClassLoader().getResource(path).getFile();
       data = new Scanner(new File(fullPath)).useDelimiter("\\Z").next();
     } catch (IOException e) {
       e.printStackTrace();
       return null;
     }
     return data;
+  }
+
+  /**
+   * 将形如`userName:root,password:12345`形式的输入字符串转换为对应的类对象
+   * @param input: 输入字符串
+   * @param t: 目标类类型
+   * @param <T>: 目标类
+   * @return: 目标类的对象
+   */
+  public static <T> OperationResult<T> input2Object(String input, Class<T> t) {
+    String json = "{" + input + "}";
+    T c = null;
+    try {
+      c = gson.fromJson(json, t);
+    } catch (Exception e) {
+      return Operation.fail(reply.getAppInputInvalidate());
+    }
+    return Operation.success(c);
   }
 
   public static boolean isTimeToTerminate(String timeString) {
@@ -80,15 +101,15 @@ public class util {
     return false;
   }
 
-  public static boolean isStartTimeValidate(String timeString){
+  public static boolean isStartTimeValidate(String timeString) {
     LocalTime time = parseTime(timeString);
-    return time != null && Duration.between(LocalTime.now(),time).toHours() >= 2;
+    return time != null && Duration.between(LocalTime.now(), time).toHours() >= 2;
   }
 
-  public static boolean isStartAndArrivalTimeValidate(String startTime, String arrivalTime){
+  public static boolean isStartAndArrivalTimeValidate(String startTime, String arrivalTime) {
     LocalTime start = parseTime(startTime);
     LocalTime arrival = parseTime(arrivalTime);
-    return start != null && arrival != null && !Duration.between(start,arrival).isNegative();
+    return start != null && arrival != null && !Duration.between(start, arrival).isNegative();
   }
 
   public static boolean isDateValidate(String dateString) {
@@ -115,9 +136,10 @@ public class util {
       "W", "X", "Y", "Z"};
 
   public static String generateUserID() {
+    int length = 8;
     StringBuilder shortBuffer = new StringBuilder();
     String uuid = UUID.randomUUID().toString().replace("-", "");
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < length; i++) {
       String str = uuid.substring(i * 4, i * 4 + 4);
       int x = Integer.parseInt(str, 16);
       shortBuffer.append(chars[x % 0x3E]);
@@ -125,7 +147,7 @@ public class util {
     return shortBuffer.toString();
   }
 
-  public static long generateOrderID(LocalDateTime time) {
+  public static Long generateOrderID(LocalDateTime time) {
     return time.toInstant(OffsetDateTime.now().getOffset()).getEpochSecond();
   }
 
