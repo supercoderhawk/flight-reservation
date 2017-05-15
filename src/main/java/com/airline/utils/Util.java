@@ -2,9 +2,11 @@ package com.airline.utils;
 
 import com.airline.bean.OperationResult;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.*;
@@ -22,9 +24,15 @@ import static com.airline.utils.Constant.reply;
  * 工具类，封装一些常用的函数
  */
 public class Util {
-  private static Gson gson = new Gson();
+  private static Gson gson = new GsonBuilder().
+      registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).create();
 
   public static <T> T loadFileToObject(String path, Class<T> c) {
+    if(StringUtils.isEmpty(path)){
+      return null;
+    }else if(!path.startsWith("/")){
+      path = "/"+path;
+    }
     String data = loadResourceFile(path);
     return gson.fromJson(data, c);
   }
@@ -38,9 +46,9 @@ public class Util {
   private static String loadResourceFile(String path) {
     String data = null;
     try {
-      String fullPath = Util.class.getClassLoader().getResource(path).getFile();
-      data = new Scanner(new File(fullPath)).useDelimiter("\\Z").next();
-    } catch (IOException e) {
+      InputStream in = Util.class.getResourceAsStream(path);
+      data = new Scanner(in, StandardCharsets.UTF_8.name()).useDelimiter("\\Z").next();
+    } catch (Exception e) {
       e.printStackTrace();
       return null;
     }
@@ -49,9 +57,10 @@ public class Util {
 
   /**
    * 将形如`userName:root,password:12345`形式的输入字符串转换为对应的类对象
+   *
    * @param input: 输入字符串
-   * @param t: 目标类类型
-   * @param <T>: 目标类
+   * @param t:     目标类类型
+   * @param <T>:   目标类
    * @return: 目标类的对象
    */
   public static <T> OperationResult<T> input2Object(String input, Class<T> t) {
@@ -164,6 +173,10 @@ public class Util {
       return null;
     }
     return sb.toString();
+  }
+
+  public static String encryptRawPassword(String userName, String password, String salt) {
+    return encrypt(userName + encrypt(password) + salt);
   }
 
 }
