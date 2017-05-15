@@ -4,7 +4,6 @@ import com.airline.DataSource;
 import com.airline.bean.Flight;
 import com.airline.bean.OperationResult;
 import com.airline.utils.Util;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,16 +18,23 @@ public class FlightServiceTest {
 
   private FlightService flightService;
   private Flight flight;
+  private Flight flight2;
+  private OperationResult<Flight> res;
 
   @Before
   public void setUp() throws Exception {
     DataSource dataSource = Util.loadFileToObject("init.json", DataSource.class);
     flightService = new FlightService(dataSource);
-    flight = new Flight("BJ1001", "AAA170512-BJ1001", "10:00:00", "12:00:00", "Beijing", "Hangzhou", "2017-05-13", 10, 10);
+    flight = new Flight("BJ1001", "AAA170512-BJ1001", "10:00:00", "12:00:00", "Beijing", "Hangzhou", "2017-06-13", 10, 10);
+    flight2 = new Flight("BJ1001", "AAA170801-BJ1001", "10:00:00", "12:00:00", "Beijing", "Hangzhou", "2017-08-01", 10, 10);
   }
 
-  @After
-  public void tearDown() throws Exception {
+  @Test
+  public void publishAllFlights() throws Exception {
+  }
+
+  @Test
+  public void queryFlight() throws Exception {
   }
 
   @Test
@@ -40,30 +46,40 @@ public class FlightServiceTest {
     assertEquals(res.isStatus(), true);
     Flight tmpFlight = new Flight();
     res = flightService.createFlight(tmpFlight);
-    assertEquals(res.isStatus(),false);
-    assertEquals(res.getMsg(),reply.getFlightFlightIDEmpty());
+    assertEquals(res.isStatus(), false);
+    assertEquals(res.getMsg(), reply.getFlightFlightIDEmpty());
     tmpFlight.setFlightID("BJ1234");
     tmpFlight.setFlightSerial("AAA123-BJ1234");
     res = flightService.createFlight(tmpFlight);
-    assertEquals(res.isStatus(),false);
-    //assertEquals(res);
-    System.out.println(res.getMsg());
+    assertEquals(res.isStatus(), false);
+
   }
 
   @Test
   public void publishFlight() throws Exception {
-    OperationResult<Flight> res = flightService.publishFlight("BJ1001");
+    res = flightService.publishFlight("BJ1001");
     assertEquals(res.isStatus(), false);
     assertEquals(res.getMsg(), reply.getFlightNoFlight());
     res = flightService.publishFlight("AAA170512-BJ1001");
     assertEquals(res.isStatus(), true);
     res = flightService.publishFlight("AAA170512-BJ1001");
     assertEquals(res.isStatus(), false);
-
   }
 
   @Test
   public void updateFlight() throws Exception {
+    res = flightService.createFlight(flight2);
+    assertEquals(res.isStatus(), true);
+    if (!res.isStatus()) {
+      return;
+    }
+    flight2.setArrivalTime("08:00:00");
+
+    res = flightService.updateFlight(flight2);
+    assertEquals(res.isStatus(), false);
+    flight2.setArrivalDate("2017-08-02");
+    //res = flightService.updateFlight(flight2);
+    //assertEquals(res.isStatus(), true);
   }
 
   @Test

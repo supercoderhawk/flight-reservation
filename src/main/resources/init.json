@@ -30,11 +30,12 @@
     {
       "flightID": "SZ0001",
       "flightSerial":"1",
-      "startTime": "10:00:00",
-      "arrivalTime": "11:00:00",
+      "startTime": "23:00:00",
+      "arrivalTime": "01:00:00",
       "startCity": "Shenzhen",
       "arrivalCity": "Beiijing",
       "departureDate": "2017-06-18",
+      "arrivalDate":"2017-06-19",
       "price": 120,
       "seatCapacity": 120
     },

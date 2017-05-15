@@ -18,6 +18,7 @@ public class Flight {
   private String startCity;
   private String arrivalCity;
   private String departureDate;
+  private String arrivalDate;
   private Integer price;
   private Integer currentPassengers = 0;
   private Integer seatCapacity;
@@ -52,6 +53,7 @@ public class Flight {
     this.startCity = startCity;
     this.arrivalCity = arrivalCity;
     this.departureDate = departureDate;
+    this.arrivalDate = departureDate;
     this.price = price;
     this.seatCapacity = seatCapacity;
   }
@@ -64,6 +66,7 @@ public class Flight {
     this.startCity = flight.getStartCity();
     this.arrivalCity = flight.getArrivalCity();
     this.departureDate = flight.getDepartureDate();
+    this.arrivalDate = flight.getArrivalDate();
     this.price = flight.getPrice();
     this.currentPassengers = flight.getCurrentPassengers();
     this.seatCapacity = flight.getSeatCapacity();
@@ -183,5 +186,13 @@ public class Flight {
 
   public void setFreeSeats(ArrayList<String> freeSeats) {
     this.freeSeats = freeSeats;
+  }
+
+  public String getArrivalDate() {
+    return arrivalDate;
+  }
+
+  public void setArrivalDate(String arrivalDate) {
+    this.arrivalDate = arrivalDate;
   }
 }

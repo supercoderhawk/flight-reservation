@@ -5,7 +5,7 @@ import com.airline.bean.Flight;
 import com.airline.bean.OperationResult;
 import com.airline.bean.Order;
 import com.airline.dao.FlightDao;
-import com.airline.utils.Constant.FlightStatus;
+import com.airline.utils.Constant;
 import com.airline.utils.Constant.QueryFlightStrategy;
 import com.airline.utils.Operation;
 
@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 
 import static com.airline.utils.Constant.flightStatusMap;
 import static com.airline.utils.Constant.reply;
+
+//import com.airline.utils.Constant.FlightStatus;
 
 /**
  * Created by airline on 2017/5/10.
@@ -26,53 +28,53 @@ public class FlightService extends FlightDao {
     super(dataSource);
   }
 
-  public OperationResult<Flight> createFlight(Flight flight){
+  public OperationResult<Flight> createFlight(Flight flight) {
     OperationResult<Object> checkRes = dataSource.getModifyFlight();
-    if(!checkRes.isStatus()){
+    if (!checkRes.isStatus()) {
       return Operation.fail(checkRes.getMsg());
     }
-    if(getFlightBySerial(flight.getFlightSerial())!=null){
-     return Operation.fail(reply.getFlightFlightExisted());
+    if (getFlightBySerial(flight.getFlightSerial()) != null) {
+      return Operation.fail(reply.getFlightFlightExisted());
     }
     addFlight(flight);
     return Operation.success(flight);
   }
 
-  public OperationResult<Flight> updateFlight(Flight flight){
+  public OperationResult<Flight> updateFlight(Flight flight) {
     OperationResult<Object> checkRes = dataSource.getModifyFlight();
-    if(!checkRes.isStatus()){
+    if (!checkRes.isStatus()) {
       return Operation.fail(checkRes.getMsg());
     }
     Flight oldFlight = getFlightBySerial(flight.getFlightSerial());
-    if(oldFlight == null){
+    if (oldFlight == null) {
       return Operation.fail(reply.getFlightNoFlight());
     }
 
-    switch (oldFlight.getFlightStatus()){
+    switch (oldFlight.getFlightStatus()) {
       case UNPUBLISHED:
-        if(flight.getStartTime() != null){
+        if (flight.getStartTime() != null) {
           oldFlight.setStartTime(flight.getStartTime());
         }
-        if(flight.getArrivalTime() != null){
+        if (flight.getArrivalTime() != null) {
           oldFlight.setArrivalTime(flight.getArrivalTime());
         }
-        if(flight.getStartCity() != null){
+        if (flight.getStartCity() != null) {
           oldFlight.setStartCity(flight.getStartCity());
         }
-        if(flight.getArrivalCity() != null){
+        if (flight.getArrivalCity() != null) {
           oldFlight.setArrivalCity(flight.getArrivalCity());
         }
       case AVAILABLE:
-        if(flight.getPrice() != null){
+        if (flight.getPrice() != null) {
           oldFlight.setPrice(flight.getPrice());
         }
-        if(flight.getCurrentPassengers() != null){
+        if (flight.getCurrentPassengers() != null) {
           oldFlight.setCurrentPassengers(flight.getCurrentPassengers());
         }
-        if(flight.getSeatCapacity() != null){
+        if (flight.getSeatCapacity() != null) {
           oldFlight.setSeatCapacity(flight.getSeatCapacity());
         }
-        if(flight.getPassengerIDs() != null){
+        if (flight.getPassengerIDs() != null) {
           oldFlight.setPassengerIDs(flight.getPassengerIDs());
         }
         break;
@@ -83,80 +85,80 @@ public class FlightService extends FlightDao {
     return Operation.success(flight);
   }
 
-  void addPassengerToFlight(Order order){
+  void addPassengerToFlight(Order order) {
     Flight flight = getFlightBySerial(order.getFlightSerial());
     flight.getPassengerIDs().add(order.getPassengerID());
-    flight.setCurrentPassengers(flight.getCurrentPassengers()+1);
+    flight.setCurrentPassengers(flight.getCurrentPassengers() + 1);
     flight.getFreeSeats().remove(order.getSeat());
   }
 
-  void removePassengerFromFlight(Order order){
+  void removePassengerFromFlight(Order order) {
     Flight flight = getFlightBySerial(order.getFlightSerial());
     flight.getPassengerIDs().remove(order.getPassengerID());
-    flight.setCurrentPassengers(flight.getCurrentPassengers()-1);
+    flight.setCurrentPassengers(flight.getCurrentPassengers() - 1);
     flight.getFreeSeats().add(order.getSeat());
     flight.getSeatArrange().remove(order.getSeat());
   }
 
-  public void publishAllFlights(){
+  public void publishAllFlights() {
     ArrayList<Flight> flights = dataSource.getFlights();
-    if(flights == null){
+    if (flights == null) {
       return;
     }
-    for(Flight flight:flights){
-      if(flight.getFlightStatus() == FlightStatus.UNPUBLISHED){
-        flight.setFlightStatus(FlightStatus.AVAILABLE);
+    for (Flight flight : flights) {
+      if (flight.getFlightStatus() == Constant.FlightStatus.UNPUBLISHED) {
+        flight.setFlightStatus(Constant.FlightStatus.AVAILABLE);
       }
     }
   }
 
-  public OperationResult<Flight> publishFlight(String flightSeries){
+  public OperationResult<Flight> publishFlight(String flightSeries) {
     Flight flight = getFlightBySerial(flightSeries);
-    if(flight == null){
+    if (flight == null) {
       return Operation.fail(reply.getFlightNoFlight());
     }
-    if(flight.getFlightStatus() != FlightStatus.UNPUBLISHED){
+    if (flight.getFlightStatus() != Constant.FlightStatus.UNPUBLISHED) {
       return Operation.fail(reply.getFlightFlightPublished());
     }
-    flight.setFlightStatus(FlightStatus.AVAILABLE);
+    flight.setFlightStatus(Constant.FlightStatus.AVAILABLE);
     return Operation.success(flight);
   }
 
-  public OperationResult<Flight> deleteFlight(String flightSerial){
+  public OperationResult<Flight> deleteFlight(String flightSerial) {
     Flight flight = getFlightBySerial(flightSerial);
-    if(flight == null){
+    if (flight == null) {
       return Operation.fail(reply.getFlightNoFlight());
     }
-    FlightStatus status = flight.getFlightStatus();
-    if(status != FlightStatus.UNPUBLISHED && status != FlightStatus.TERMINATE){
-      return Operation.fail(String.format(reply.getFlightCantDeleteFlight(),flightStatusMap.get(status)));
+    Constant.FlightStatus status = flight.getFlightStatus();
+    if (status != Constant.FlightStatus.UNPUBLISHED && status != Constant.FlightStatus.TERMINATE) {
+      return Operation.fail(String.format(reply.getFlightCantDeleteFlight(), flightStatusMap.get(status)));
     }
     removeFlightBySerial(flight.getFlightID());
     return Operation.success(flight);
   }
 
-  public OperationResult<ArrayList<Flight>> queryFlight(Flight flight, QueryFlightStrategy strategy){
+  public OperationResult<ArrayList<Flight>> queryFlight(Flight flight, QueryFlightStrategy strategy) {
     ArrayList<Flight> flights;
     Optional<String> startCity = Optional.ofNullable(flight.getStartCity());
     Optional<String> arrivalCity = Optional.ofNullable(flight.getArrivalCity());
     Optional<String> departureDate = Optional.ofNullable(flight.getDepartureDate());
-    if(strategy == QueryFlightStrategy.OTHER){
+    if (strategy == QueryFlightStrategy.OTHER) {
       boolean isNotEmpty = startCity.isPresent() || arrivalCity.isPresent() || departureDate.isPresent();
-      if(!isNotEmpty){
+      if (!isNotEmpty) {
         return Operation.fail(reply.getFlightNotSetupAllTime());
       }
     }
 
-    switch (strategy){
+    switch (strategy) {
       case ID:
-        flights = dataSource.getFlights().stream().filter(f->f.getFlightID().contains(flight.getFlightID()))
-                                                  .collect(Collectors.toCollection(ArrayList::new));
+        flights = dataSource.getFlights().stream().filter(f -> f.getFlightID().contains(flight.getFlightID()))
+            .collect(Collectors.toCollection(ArrayList::new));
         break;
       case OTHER:
         flights = dataSource.getFlights().stream()
-            .filter(f->!startCity.isPresent()|| f.getStartCity().equals(startCity.get()))
-            .filter(f->!arrivalCity.isPresent()||f.getStartCity().equals(arrivalCity.get()) )
-            .filter(f->!departureDate.isPresent()||f.getStartCity().equals(departureDate.get()))
+            .filter(f -> !startCity.isPresent() || f.getStartCity().equals(startCity.get()))
+            .filter(f -> !arrivalCity.isPresent() || f.getStartCity().equals(arrivalCity.get()))
+            .filter(f -> !departureDate.isPresent() || f.getStartCity().equals(departureDate.get()))
             .collect(Collectors.toCollection(ArrayList::new));
         break;
       default:

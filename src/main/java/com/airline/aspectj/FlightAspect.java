@@ -13,7 +13,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 import static com.airline.utils.Constant.reply;
@@ -51,6 +50,10 @@ public class FlightAspect {
   @Before("validatePointAtCreate(com.airline.bean.Flight) && args(flight)")
   public void validateFlightAtCreate(JoinPoint joinPoint, Flight flight) {
     DataSource dataSource = ((FlightService) joinPoint.getTarget()).getDataSource();
+    if(flight == null){
+      dataSource.setModifyFlight(Operation.fail(reply.getFlightParameterEmpty()));
+      return;
+    }
     if (StringUtils.isEmpty(flight.getFlightID())) {
       dataSource.setModifyFlight(Operation.fail(reply.getFlightFlightIDEmpty()));
       return;
@@ -72,14 +75,7 @@ public class FlightAspect {
       return;
     } else if (!Util.isDateValidate(departureDate.get())) {
       dataSource.setModifyFlight(Operation.fail(reply.getFlightDepartureDateInvalidate()));
-      if (StringUtils.isNotEmpty(flight.getArrivalDate())) {
-        if (!Util.isDateValidate(flight.getArrivalDate())) {
-          dataSource.setModifyFlight(Operation.fail(reply.getFlightArrivalDateInvalidate()));
-          return;
-        }
-      } else {
-        flight.setArrivalDate(flight.getDepartureDate());
-      }
+      return;
     } else if (!Util.isTimeValidate(startTime.get())) {
       dataSource.setModifyFlight(Operation.fail(reply.getFlightStartTimeInvalidate()));
       return;
@@ -92,6 +88,15 @@ public class FlightAspect {
     } else if (StringUtils.isEmpty(flight.getArrivalCity())) {
       dataSource.setModifyFlight(Operation.fail(reply.getFlightArrivalCityEmpty()));
       return;
+    }
+
+    if (StringUtils.isNotEmpty(flight.getArrivalDate())) {
+      if (!Util.isDateValidate(flight.getArrivalDate())) {
+        dataSource.setModifyFlight(Operation.fail(reply.getFlightArrivalDateInvalidate()));
+        return;
+      }
+    } else {
+      flight.setArrivalDate(flight.getDepartureDate());
     }
 
     // 对起飞和降落时间的检查
@@ -120,12 +125,13 @@ public class FlightAspect {
    * <p>更新航班前进行参数检查</p>
    * <p>要求</p>
    * <ol>
-   *   <li>必须传入航班序列号并且航班序列号对应的航班必须存在</li>
-   *   <li>如果参数为空，则该字段不更新，即只设置航班序列号的话，等于不更新</li>
-   *   <li>日期格式必须符合要求，起飞时间和降落时间必须符合要求</li>
+   * <li>必须传入航班序列号并且航班序列号对应的航班必须存在</li>
+   * <li>如果参数为空，则该字段不更新，即只设置航班序列号的话，等于不更新</li>
+   * <li>日期格式必须符合要求，起飞时间和降落时间必须符合要求</li>
    * </ol>
+   *
    * @param joinPoint: 连接点参数
-   * @param flight: 更新的航班对象
+   * @param flight:    更新的航班对象
    */
   @Before("validatePointAtUpdate(com.airline.bean.Flight) && args(flight)")
   public void validateFlightAtUpdate(JoinPoint joinPoint, Flight flight) {
@@ -145,7 +151,7 @@ public class FlightAspect {
     String arrivalTime = flight.getArrivalTime();
     String departureDate = flight.getDepartureDate();
     String arrivalDate = flight.getArrivalDate();
-    if (StringUtils.isEmpty(startTime)) {
+    if (!StringUtils.isEmpty(startTime)) {
       if (!Util.isTimeValidate(startTime)) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightParameterEmpty()));
         return;
@@ -153,7 +159,7 @@ public class FlightAspect {
     } else {
       startTime = oldFlight.getStartTime();
     }
-    if (StringUtils.isEmpty(arrivalTime)) {
+    if (!StringUtils.isEmpty(arrivalTime)) {
       if (!Util.isTimeValidate(arrivalTime)) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightStartTimeInvalidate()));
         return;
@@ -161,7 +167,7 @@ public class FlightAspect {
     } else {
       arrivalTime = oldFlight.getArrivalTime();
     }
-    if (StringUtils.isEmpty(departureDate)) {
+    if (!StringUtils.isEmpty(departureDate)) {
       if (!Util.isDateValidate(departureDate)) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightDepartureDateInvalidate()));
         return;
@@ -169,7 +175,7 @@ public class FlightAspect {
     } else {
       departureDate = oldFlight.getDepartureDate();
     }
-    if (StringUtils.isEmpty(arrivalDate)) {
+    if (!StringUtils.isEmpty(arrivalDate)) {
       if (!Util.isDateValidate(arrivalDate)) {
         dataSource.setModifyFlight(Operation.fail(reply.getFlightArrivalDateInvalidate()));
         return;
@@ -197,14 +203,10 @@ public class FlightAspect {
   @Before("updateStatusPoint()")
   public void updateFlightStatus(JoinPoint joinPoint) {
     DataSource dataSource = ((FlightService) joinPoint.getTarget()).getDataSource();
-    ArrayList<Flight> flights = dataSource.getFlights();
-    if (flights == null) {
-      return;
-    }
-    for (Flight flight : flights) {
+    for (Flight flight : dataSource.getFlights()) {
       boolean isTerminate = Util.isStartTimeValidate(flight.getStartTime(), flight.getDepartureDate());
       Constant.FlightStatus status = flight.getFlightStatus();
-      if (isTerminate) {
+      if (!isTerminate) {
         if (status == Constant.FlightStatus.AVAILABLE || status == Constant.FlightStatus.FULL) {
           flight.setFlightStatus(Constant.FlightStatus.TERMINATE);
         }

@@ -4,7 +4,6 @@ import com.airline.DataSource;
 import com.airline.bean.Admin;
 import com.airline.bean.OperationResult;
 import com.airline.utils.Util;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,10 +22,6 @@ public class AdminServiceTest {
   public void setUp() throws Exception {
     DataSource dataSource = Util.loadFileToObject("init.json", DataSource.class);
     adminService = new AdminService(dataSource);
-  }
-
-  @After
-  public void tearDown() throws Exception {
   }
 
   @Test

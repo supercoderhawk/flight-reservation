@@ -25,7 +25,11 @@ public class FlightDao extends BaseDao {
   }
 
   protected Flight getFlightBySerial(String serial) {
-    for (Flight fight : dataSource.getFlights()) {
+    ArrayList<Flight> flights = dataSource.getFlights();
+    if(flights == null){
+      return null;
+    }
+    for (Flight fight : flights) {
       if (fight.getFlightSerial().equals(serial)) {
         return fight;
       }

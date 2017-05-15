@@ -6,7 +6,6 @@ import com.airline.bean.OperationResult;
 import com.airline.bean.Order;
 import com.airline.utils.Constant;
 import com.airline.utils.Util;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,10 +35,6 @@ public class OrderServiceTest {
     PassengerService passengerService = new PassengerService(dataSource);
     orderService = new OrderService(dataSource, flightService, passengerService);
 
-  }
-
-  @After
-  public void tearDown() throws Exception {
   }
 
   @Test

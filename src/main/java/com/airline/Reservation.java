@@ -5,14 +5,15 @@ import com.airline.service.AdminService;
 import com.airline.service.FlightService;
 import com.airline.service.OrderService;
 import com.airline.service.PassengerService;
+import com.airline.utils.Constant;
 import com.airline.utils.Constant.OrderStatus;
 import com.airline.utils.LocalDateTimeAdapter;
-import com.airline.utils.Operation;
 import com.airline.utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -35,24 +36,39 @@ public class Reservation {
     passengerService = new PassengerService(dataSource);
     orderService = new OrderService(dataSource, flightService, passengerService);
     adminService = new AdminService(dataSource);
+    if (dataSource == null) {
+      System.out.println(reply.getAppInitFail());
+      System.exit(1);
+    }
+    /*
+    ArrayList<Flight> flights = dataSource.getFlights();
+    dataSource.setFlights(new ArrayList<>());
+    OperationResult<Flight> fligtRes;
+    for (Flight flight : flights) {
+      fligtRes = flightService.createFlight(flight);
+      if(!fligtRes.isStatus()){
+        System.out.println(fligtRes.getMsg());
+      }
+    }*/
+    //System.out.println(dataSource.getFlights().size());
   }
 
-  private static OperationResult<Reservation> init() {
+  private static Reservation init() {
     DataSource dataSource = Util.loadFileToObject("init.json", DataSource.class);
-    Reservation reservation = new Reservation(dataSource);
-    return Operation.success(reservation);
+    return new Reservation(dataSource);
   }
 
-  private static OperationResult<Map<String, String>> getArgs(String[] args) {
+  private static Map<String, String> getArgs(String[] args) {
     Map<String, String> map = new HashMap<>();
     for (String arg : args) {
       String[] pair = arg.split("=");
       if (pair.length != 2) {
-        return Operation.fail("参数错误");
+        System.out.println("命令行参数错误，程序将退出");
+        System.exit(1);
       }
       map.put(pair[0], pair[1]);
     }
-    return Operation.success(map);
+    return map;
   }
 
   private static String prettyOutput(Object obj) {
@@ -70,6 +86,7 @@ public class Reservation {
     Passenger passenger;
     Order order;
     Admin admin;
+    Admin curAdmin;
 
     System.out.println("欢迎使用机票预订系统！");
     do {
@@ -86,8 +103,9 @@ public class Reservation {
           OperationResult<Admin> resAdmin = reservation.adminService.login(admin);
           if (resAdmin.isStatus()) {
             System.out.println("欢迎进入管理员系统");
+            curAdmin = resAdmin.getData();
             do {
-              System.out.println("请输入指令进行操作：0：返回上一级，1：添加航班，2,发布航班，3：修改航班，4：删除航班，5：查询航班，6：添加管理员");
+              System.out.println("请输入指令进行操作：0：返回上一级，1：添加航班，2,发布航班，3：修改航班，4：删除航班，5：查询航班，6：添加管理员，7，修改密码");
               cmd = scanner.nextLine();
               switch (cmd) {
                 case "1":
@@ -106,9 +124,26 @@ public class Reservation {
                   break;
                 case "2":
                   System.out.print("请输入需要发布的航班序列号：");
+                  resFlight  = reservation.flightService.publishFlight(scanner.nextLine());
+                  if(!resFlight.isStatus()){
+                    System.out.println(resFlight.getMsg());
+                  }else {
+                    System.out.println("发布成功");
+                  }
                   break;
                 case "3":
                   System.out.println("请输入需要修改的航班序列号及需修改的信息");
+                  resFlight = Util.input2Object(scanner.nextLine(),Flight.class);
+                  if(!resFlight.isStatus()){
+                    System.out.println(resFlight.getMsg());
+                  }else {
+                    resFlight = reservation.flightService.updateFlight(resFlight.getData());
+                    if(!resFlight.isStatus()){
+                      System.out.println(resFlight.getMsg());
+                    }else {
+                      System.out.println("修改信息成功");
+                    }
+                  }
                   break;
                 case "4":
                   System.out.print("请输入需要删除的航班序列号：");
@@ -119,6 +154,27 @@ public class Reservation {
                   }
                   break;
                 case "5":
+                  System.out.println("选择查找方式：Y：按照ID查找，N：起飞城市、到达城市和起飞日期");
+                  String search = scanner.nextLine();
+                  Flight searchFlight = new Flight();
+                  OperationResult<ArrayList<Flight>> flights;
+                  if(search.equals("Y")){
+                    System.out.println("请输入航班号");
+                    searchFlight.setFlightID(scanner.nextLine());
+                    flights = reservation.flightService.queryFlight(searchFlight, Constant.QueryFlightStrategy.ID);
+                    System.out.println(prettyOutput(flights));
+                  }else if(search.equals("N")){
+                    System.out.println("请输入相关信息：");
+                    resFlight = Util.input2Object(scanner.nextLine(),Flight.class);
+                    if(!resFlight.isStatus()){
+                      System.out.println(resFlight.getMsg());
+                      break;
+                    }else {
+                      flights = reservation.flightService.queryFlight(resFlight.getData(), Constant
+                          .QueryFlightStrategy.OTHER);
+                      System.out.println(prettyOutput(flights));
+                    }
+                  }
                   break;
                 case "6":
                   System.out.println("请输入要添加的管理员账号和密码");
@@ -128,11 +184,21 @@ public class Reservation {
                   System.out.print("密码：");
                   admin.setPassword(Util.encrypt(scanner.nextLine()));
                   resAdmin = reservation.adminService.addAdmin(admin);
-                  if(!resAdmin.isStatus()){
+                  if (!resAdmin.isStatus()) {
                     System.out.println(resAdmin.getMsg());
-                  }else {
+                  } else {
                     System.out.println("添加管理员成功");
                   }
+                  break;
+                case "7":
+                  System.out.print("请输入新的密码：");
+                  curAdmin.setPassword(Util.encrypt(scanner.nextLine()));
+                  resAdmin = reservation.adminService.updateAdmin(curAdmin);
+                  if(!resAdmin.isStatus()){
+                    System.out.println(resAdmin.getMsg());
+                  }
+                  break;
+                case "0":
                   break;
                 default:
                   System.out.println("输入的命令不存在");
@@ -211,6 +277,8 @@ public class Reservation {
                 case "3":
                   System.out.println(prettyOutput(curPassenger.getOrderList()));
                   break;
+                case "0":
+                  break;
                 default:
                   System.out.println("输入的命令不存在");
               }
@@ -234,6 +302,8 @@ public class Reservation {
             System.out.println("用户注册成功！");
           }
           break;
+        case "4":
+          break;
         default:
           System.out.println("输入的命令不存在");
       }
@@ -242,22 +312,8 @@ public class Reservation {
   }
 
   public static void main(String[] args) {
-    /*
-    Map<String,String> argsMap = null;
-    OperationResult<Map<String,String>> res = getArgs(args);
-    if(!res.isStatus()){
-      System.out.println(res.getMsg());
-    }else {
-      argsMap = res.getData();
-    }
-    */
+    Map<String,String> argsMap = getArgs(args);
 
-    OperationResult<Reservation> res = init();
-    //System.out.println(res.getClass().getClassLoader());
-    if (!res.isStatus()) {
-      System.out.println(reply.getAppInitFail());
-      return;
-    }
-    process(res.getData());
+    process(init());
   }
 }

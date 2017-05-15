@@ -25,7 +25,7 @@ public class AdminService extends AdminDao {
     String userName = admin.getUserName();
     if (StringUtils.isEmpty(userName)) {
       return Operation.fail(reply.getAdminUserNameEmpty());
-    }else if(StringUtils.isEmpty(admin.getPassword())){
+    } else if (StringUtils.isEmpty(admin.getPassword())) {
       return Operation.fail(reply.getAdminPasswordEmpty());
     }
     Admin oldAdmin = getAdminByName(admin.getUserName());
@@ -33,7 +33,7 @@ public class AdminService extends AdminDao {
       return Operation.fail(reply.getAdminUserNameExisted());
     }
     String salt = RandomStringUtils.randomAlphanumeric(16);
-    admin.setPassword(Util.encrypt(admin.getUserName()+admin.getPassword()+salt));
+    admin.setPassword(Util.encrypt(admin.getUserName() + admin.getPassword() + salt));
     admin.setSalt(salt);
     createAdmin(admin);
     return Operation.success(new Admin(admin));
@@ -43,7 +43,7 @@ public class AdminService extends AdminDao {
     String userName = admin.getUserName();
     if (StringUtils.isEmpty(userName)) {
       return Operation.fail(reply.getAdminUserNameEmpty());
-    }else if(StringUtils.isEmpty(admin.getPassword())){
+    } else if (StringUtils.isEmpty(admin.getPassword())) {
       return Operation.fail(reply.getAdminPasswordEmpty());
     }
     Admin trueAdmin = getAdminByName(admin.getUserName());
@@ -55,5 +55,20 @@ public class AdminService extends AdminDao {
       return Operation.success(trueAdmin);
     }
     return Operation.fail(reply.getAdminAuthenticateFail());
+  }
+
+  public OperationResult<Admin> updateAdmin(Admin admin) {
+    String userName = admin.getUserName();
+    if (StringUtils.isEmpty(userName)) {
+      return Operation.fail(reply.getAdminUserNameEmpty());
+    } else if (StringUtils.isEmpty(admin.getPassword())) {
+      return Operation.fail(reply.getAdminPasswordEmpty());
+    }
+    Admin oldAdmin = getAdminByName(userName);
+    if (oldAdmin == null) {
+      return Operation.fail(reply.getAdminUserNameNoExist());
+    }
+    admin.setPassword(Util.encrypt(userName + admin.getPassword() + oldAdmin.getSalt()));
+    return Operation.success(admin);
   }
 }

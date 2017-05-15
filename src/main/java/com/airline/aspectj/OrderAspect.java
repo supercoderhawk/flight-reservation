@@ -35,7 +35,7 @@ public class OrderAspect {
   public void validateOrderAtReserve(JoinPoint joinPoint, Order order) {
     DataSource dataSource = ((OrderService)joinPoint.getTarget()).getDataSource();
     if(order == null ){
-      dataSource.setOrderCheck(Operation.fail(reply.getAppParameterEmpty()));
+      //dataSource.setOrderCheck(Operation.fail(reply.getAppParameterEmpty()));
       return;
     }
     order.setOrderStatus(Constant.OrderStatus.UNPAID);
@@ -113,7 +113,8 @@ public class OrderAspect {
         return Operation.success(passenger);
       }
     }
-    return Operation.fail(reply.getPassengerNotExist());
+    return Operation.fail("");
+    //return Operation.fail(reply.getPassengerNotExist());
   }
 
 }
