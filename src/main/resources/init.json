@@ -37,7 +37,19 @@
       "departureDate": "2017-06-18",
       "arrivalDate":"2017-06-19",
       "price": 120,
-      "seatCapacity": 120
+      "seatCapacity": 120,
+      "currentPassengers":1
+    },
+    {
+      "flightID": "SZ0001",
+      "flightSerial":"2",
+      "startTime": "14:00:00",
+      "arrivalTime": "15:00:00",
+      "startCity": "Shenzhen",
+      "arrivalCity": "Beiijing",
+      "departureDate": "2017-06-29",
+      "price": 120,
+      "seatCapacity": 1
     },
     {
       "flightID": "SZ1001",
