@@ -77,6 +77,10 @@
           <showWeaveInfo>true</showWeaveInfo>
           <aspectDirectory>src/main/java</aspectDirectory>
           <testAspectDirectory>src/test/java</testAspectDirectory>
+          <Xset>
+            <overWeaving>true</overWeaving>
+            <avoidFinal>false</avoidFinal>
+          </Xset>
         </configuration>
         <executions>
           <execution>

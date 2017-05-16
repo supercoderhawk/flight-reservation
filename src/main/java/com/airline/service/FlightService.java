@@ -2,6 +2,7 @@ package com.airline.service;
 
 import com.airline.DataSource;
 import com.airline.bean.Flight;
+import com.airline.bean.FlightPublic;
 import com.airline.bean.OperationResult;
 import com.airline.bean.Order;
 import com.airline.dao.FlightDao;
@@ -160,6 +161,33 @@ public class FlightService extends FlightDao {
         break;
       default:
         return Operation.fail(reply.getFlightQueryStrategyError());
+    }
+    return Operation.success(flights);
+  }
+
+  private OperationResult<ArrayList<Flight>> queryFlight(Flight flight, Constant.QueryFlightStrategy strategy,
+                                                        boolean isAvailable) {
+    OperationResult<ArrayList<Flight>> res = queryFlight(flight,strategy);
+    if(!res.isStatus()){
+      return Operation.fail(res.getMsg());
+    }
+    ArrayList<Flight> flights = res.getData();
+    if(isAvailable){
+      flights= flights.stream().filter(f->f.getFlightStatus() == Constant.FlightStatus.AVAILABLE)
+                            .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    return Operation.success(flights);
+  }
+
+  public OperationResult<ArrayList<FlightPublic>> queryFlightPublic(Flight flight, Constant.QueryFlightStrategy strategy){
+    OperationResult<ArrayList<Flight>> res = queryFlight(flight,strategy,true);
+    if(!res.isStatus()){
+      return Operation.fail(res.getMsg());
+    }
+    ArrayList<FlightPublic> flights = new ArrayList<>();
+    for(Flight tmpFlight:res.getData()){
+      flights.add(new FlightPublic(tmpFlight));
     }
     return Operation.success(flights);
   }

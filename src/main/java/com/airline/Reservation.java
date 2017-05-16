@@ -10,6 +10,7 @@ import com.airline.utils.LocalDateTimeAdapter;
 import com.airline.utils.Util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,17 +45,15 @@ public class Reservation {
       System.out.println(reply.getAppInitFail());
       System.exit(1);
     }
-    /*
-    ArrayList<Flight> flights = dataSource.getFlights();
-    dataSource.setFlights(new ArrayList<>());
+
     OperationResult<Flight> fligtRes;
-    for (Flight flight : flights) {
-      fligtRes = flightService.createFlight(flight);
-      if(!fligtRes.isStatus()){
-        System.out.println(fligtRes.getMsg());
+    for (Flight flight : dataSource.getFlights()) {
+      Util.addSeats(flight.getFreeSeats(),flight.getSeatCapacity());
+      if(StringUtils.isEmpty(flight.getArrivalDate())){
+        flight.setArrivalDate(flight.getDepartureDate());
       }
-    }*/
-    //System.out.println(dataSource.getFlights().size());
+    }
+    flightService.publishAllFlights();
   }
 
   private static Reservation init() {
@@ -310,13 +309,13 @@ public class Reservation {
           System.out.println("选择查找方式：Y：按照ID查找，N：起飞城市、到达城市和起飞日期");
           String search = scanner.nextLine();
           Flight searchFlight = new Flight();
-          OperationResult<ArrayList<Flight>> flights;
+          OperationResult<ArrayList<FlightPublic>> flights;
           Constant.QueryFlightStrategy strategy;
           if(search.equals("Y")){
-            System.out.println("请输入航班号");
+            System.out.println("请输入航班号：");
             searchFlight.setFlightID(scanner.nextLine());
-            flights = reservation.flightService.queryFlight(searchFlight, Constant.QueryFlightStrategy.ID);
-            System.out.println(prettyOutput(flights));
+            flights = reservation.flightService.queryFlightPublic(searchFlight, Constant.QueryFlightStrategy.ID);
+            System.out.println(prettyOutput(flights.getData()));
           }else if(search.equals("N")){
             System.out.println("请输入相关信息：");
             resFlight = Util.input2Object(scanner.nextLine(),Flight.class);
@@ -324,8 +323,8 @@ public class Reservation {
               System.out.println(resFlight.getMsg());
               break;
             }else {
-              flights = reservation.flightService.queryFlight(resFlight.getData(), Constant.QueryFlightStrategy.OTHER);
-              System.out.println(prettyOutput(flights));
+              flights = reservation.flightService.queryFlightPublic(resFlight.getData(), Constant.QueryFlightStrategy.OTHER);
+              System.out.println(prettyOutput(flights.getData()));
             }
           }
           break;

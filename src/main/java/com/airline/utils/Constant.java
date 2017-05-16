@@ -12,7 +12,6 @@ import java.util.Map;
  * 一些枚举和常量
  */
 public class Constant {
-  public enum Identity {ADMIN,USER}
 
   public enum OrderStatus {
     @SerializedName("unpaid")

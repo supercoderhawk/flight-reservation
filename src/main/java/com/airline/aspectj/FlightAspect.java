@@ -111,12 +111,7 @@ public class FlightAspect {
     }
 
     // 设置座位
-    Integer seats = flight.getSeatCapacity();
-    if (seats != null) {
-      for (int i = 0; i < seats; i++) {
-        flight.getFreeSeats().add(String.valueOf(i + 1));
-      }
-    }
+    Util.addSeats(flight.getFreeSeats(),flight.getSeatCapacity());
 
     dataSource.setModifyFlight(Operation.success());
   }

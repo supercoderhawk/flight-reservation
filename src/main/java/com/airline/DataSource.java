@@ -1,7 +1,6 @@
 package com.airline;
 
 import com.airline.bean.*;
-import com.airline.utils.Constant;
 
 import java.util.ArrayList;
 
@@ -10,7 +9,6 @@ import java.util.ArrayList;
  * 数据源，保存程序的所有数据状态
  */
 public class DataSource {
-  private Constant.Identity identity;
   private ArrayList<Flight> flights = new ArrayList<Flight>();
   private ArrayList<Passenger> passengers = new ArrayList<Passenger>();
   private ArrayList<Admin> admins = new ArrayList<Admin>();
@@ -31,14 +29,6 @@ public class DataSource {
 
   public void setModifyFlight(OperationResult<Object> modifyFlight) {
     this.modifyFlight = modifyFlight;
-  }
-
-  public Constant.Identity getIdentity() {
-    return identity;
-  }
-
-  public void setIdentity(Constant.Identity identity) {
-    this.identity = identity;
   }
 
   public ArrayList<Flight> getFlights() {

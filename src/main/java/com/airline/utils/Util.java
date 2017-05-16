@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -173,4 +174,12 @@ public class Util {
     return encrypt(userName + encrypt(password) + salt);
   }
 
+  public static ArrayList<String> addSeats(ArrayList<String> emptySeats, Integer seats) {
+    if (seats != null) {
+      for (int i = 0; i < seats; i++) {
+        emptySeats.add(String.valueOf(i + 1));
+      }
+    }
+    return emptySeats;
+  }
 }

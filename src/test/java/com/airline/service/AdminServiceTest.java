@@ -15,6 +15,19 @@ import static org.junit.Assert.assertEquals;
  * 管理员信息单元测试类
  */
 public class AdminServiceTest {
+  @Test
+  public void updateAdmin() throws Exception {
+    Admin admin = new Admin("root",Util.encrypt("1234"));
+    Admin admin1 = new Admin("xyb","123");
+    adminRes = adminService.updateAdmin(admin);
+    assertEquals(adminRes.isStatus(),true);
+    adminRes =adminService.updateAdmin(admin1);
+    assertEquals(adminRes.isStatus(),false);
+    admin1.setPassword("");
+    adminRes = adminService.updateAdmin(admin1);
+    assertEquals(adminRes.isStatus(),false);
+  }
+
   private AdminService adminService;
   private OperationResult<Admin> adminRes;
 
