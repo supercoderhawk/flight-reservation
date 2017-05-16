@@ -1,11 +1,7 @@
 package com.airline;
 
-import com.airline.bean.OperationResult;
-import com.airline.utils.Constant.Identity;
-import com.airline.bean.Admin;
-import com.airline.bean.Flight;
-import com.airline.bean.Order;
-import com.airline.bean.Passenger;
+import com.airline.bean.*;
+import com.airline.utils.Constant;
 
 import java.util.ArrayList;
 
@@ -14,7 +10,7 @@ import java.util.ArrayList;
  * 数据源，保存程序的所有数据状态
  */
 public class DataSource {
-  private Identity identity;
+  private Constant.Identity identity;
   private ArrayList<Flight> flights = new ArrayList<Flight>();
   private ArrayList<Passenger> passengers = new ArrayList<Passenger>();
   private ArrayList<Admin> admins = new ArrayList<Admin>();
@@ -37,11 +33,11 @@ public class DataSource {
     this.modifyFlight = modifyFlight;
   }
 
-  public Identity getIdentity() {
+  public Constant.Identity getIdentity() {
     return identity;
   }
 
-  public void setIdentity(Identity identity) {
+  public void setIdentity(Constant.Identity identity) {
     this.identity = identity;
   }
 

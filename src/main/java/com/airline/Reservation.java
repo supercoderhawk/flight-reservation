@@ -6,7 +6,6 @@ import com.airline.service.FlightService;
 import com.airline.service.OrderService;
 import com.airline.service.PassengerService;
 import com.airline.utils.Constant;
-import com.airline.utils.Constant.OrderStatus;
 import com.airline.utils.LocalDateTimeAdapter;
 import com.airline.utils.Util;
 import com.google.gson.Gson;
@@ -217,9 +216,9 @@ public class Reservation {
         case "2":
           System.out.println("请输入身份证号和密码进行登录");
           passenger = new Passenger();
-          System.out.print("请输入身份证号，8位");
+          System.out.print("请输入身份证号，8位：");
           passenger.setIdentityID(scanner.nextLine());
-          System.out.print("请输入密码");
+          System.out.print("请输入密码：");
           passenger.setPassword(Util.encrypt(scanner.nextLine()));
           //char[] passString = System.console().readPassword("%s", "请输入密码:");
           //passenger.setPassword(Util.encrypt(new String(passString)));
@@ -248,7 +247,7 @@ public class Reservation {
                     System.out.println("预定航班成功，座位号为" + order.getSeat() + "，是否支付，Y：支付，N：取消订单");
                     String pay = scanner.nextLine();
                     if (pay.equals("Y")) {
-                      order.setOrderStatus(OrderStatus.PAID);
+                      order.setOrderStatus(Constant.OrderStatus.PAID);
                       resOrder = reservation.orderService.payOrder(order);
                       if (!resOrder.isStatus()) {
                         System.out.println(resOrder.getMsg());
@@ -256,7 +255,7 @@ public class Reservation {
                         System.out.println("支付成功");
                       }
                     } else if (pay.equals("N")) {
-                      order.setOrderStatus(OrderStatus.CANCEL);
+                      order.setOrderStatus(Constant.OrderStatus.CANCEL);
                       resOrder = reservation.orderService.payOrder(order);
                       if (!resOrder.isStatus()) {
                         System.out.println(resOrder.getMsg());
@@ -271,7 +270,7 @@ public class Reservation {
                   System.out.print("请输入航班序列号");
                   order.setPassengerID(curPassenger.getPassengerID());
                   order.setFlightSerial(scanner.nextLine());
-                  resOrder = reservation.orderService.unsubscribleFlight(order);
+                  resOrder = reservation.orderService.unsubscribeFlight(order);
                   if (!resOrder.isStatus()) {
                     System.out.println(resOrder.getMsg());
                     break;
@@ -308,6 +307,27 @@ public class Reservation {
           }
           break;
         case "4":
+          System.out.println("选择查找方式：Y：按照ID查找，N：起飞城市、到达城市和起飞日期");
+          String search = scanner.nextLine();
+          Flight searchFlight = new Flight();
+          OperationResult<ArrayList<Flight>> flights;
+          Constant.QueryFlightStrategy strategy;
+          if(search.equals("Y")){
+            System.out.println("请输入航班号");
+            searchFlight.setFlightID(scanner.nextLine());
+            flights = reservation.flightService.queryFlight(searchFlight, Constant.QueryFlightStrategy.ID);
+            System.out.println(prettyOutput(flights));
+          }else if(search.equals("N")){
+            System.out.println("请输入相关信息：");
+            resFlight = Util.input2Object(scanner.nextLine(),Flight.class);
+            if(!resFlight.isStatus()){
+              System.out.println(resFlight.getMsg());
+              break;
+            }else {
+              flights = reservation.flightService.queryFlight(resFlight.getData(), Constant.QueryFlightStrategy.OTHER);
+              System.out.println(prettyOutput(flights));
+            }
+          }
           break;
         case "0":
           break;

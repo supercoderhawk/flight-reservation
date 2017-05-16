@@ -53,7 +53,7 @@ public class OrderService extends OrderDao {
     return Operation.success(new Order(oldOrder));
   }
 
-  public OperationResult<Order> unsubscribleFlight(Order order){
+  public OperationResult<Order> unsubscribeFlight(Order order){
     Order oldOrder = getOrderByID(order.getOrderID());
     if(oldOrder.getOrderStatus() != OrderStatus.PAID || oldOrder.getOrderStatus() != OrderStatus.UNPAID){
       return Operation.fail(reply.getOrderUnsupportedCancelFlight());

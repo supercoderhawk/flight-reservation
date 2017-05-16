@@ -1,6 +1,6 @@
 package com.airline.bean;
 
-import com.airline.utils.Constant.FlightStatus;
+import com.airline.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class Flight {
   private Integer price;
   private Integer currentPassengers = 0;
   private Integer seatCapacity;
-  private FlightStatus flightStatus = FlightStatus.UNPUBLISHED;
+  private Constant.FlightStatus flightStatus = Constant.FlightStatus.UNPUBLISHED;
   private ArrayList<Integer> passengerIDs = new ArrayList<>();
   private Map<String, Integer> seatArrange = new HashMap<>();
   private ArrayList<String> freeSeats = new ArrayList<>();
@@ -156,11 +156,11 @@ public class Flight {
     this.seatCapacity = seatCapacity;
   }
 
-  public FlightStatus getFlightStatus() {
+  public Constant.FlightStatus getFlightStatus() {
     return flightStatus;
   }
 
-  public void setFlightStatus(FlightStatus flightStatus) {
+  public void setFlightStatus(Constant.FlightStatus flightStatus) {
     this.flightStatus = flightStatus;
   }
 

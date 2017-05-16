@@ -6,7 +6,6 @@ import com.airline.bean.OperationResult;
 import com.airline.bean.Order;
 import com.airline.dao.FlightDao;
 import com.airline.utils.Constant;
-import com.airline.utils.Constant.QueryFlightStrategy;
 import com.airline.utils.Operation;
 
 import java.util.ArrayList;
@@ -15,8 +14,6 @@ import java.util.stream.Collectors;
 
 import static com.airline.utils.Constant.flightStatusMap;
 import static com.airline.utils.Constant.reply;
-
-//import com.airline.utils.Constant.FlightStatus;
 
 /**
  * Created by airline on 2017/5/10.
@@ -137,12 +134,12 @@ public class FlightService extends FlightDao {
     return Operation.success(flight);
   }
 
-  public OperationResult<ArrayList<Flight>> queryFlight(Flight flight, QueryFlightStrategy strategy) {
+  public OperationResult<ArrayList<Flight>> queryFlight(Flight flight, Constant.QueryFlightStrategy strategy) {
     ArrayList<Flight> flights;
     Optional<String> startCity = Optional.ofNullable(flight.getStartCity());
     Optional<String> arrivalCity = Optional.ofNullable(flight.getArrivalCity());
     Optional<String> departureDate = Optional.ofNullable(flight.getDepartureDate());
-    if (strategy == QueryFlightStrategy.OTHER) {
+    if (strategy == Constant.QueryFlightStrategy.OTHER) {
       boolean isNotEmpty = startCity.isPresent() || arrivalCity.isPresent() || departureDate.isPresent();
       if (!isNotEmpty) {
         return Operation.fail(reply.getFlightNotSetupAllTime());

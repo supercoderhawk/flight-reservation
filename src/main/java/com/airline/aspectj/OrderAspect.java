@@ -113,8 +113,7 @@ public class OrderAspect {
         return Operation.success(passenger);
       }
     }
-    return Operation.fail("");
-    //return Operation.fail(reply.getPassengerNotExist());
+    return Operation.fail(reply.getPassengerNotExist());
   }
 
 }
