@@ -14,3 +14,4 @@ deploy:
   on:
     repo: supercoderhawk/flight-reservation
     tags: true
+  overwrite: true
