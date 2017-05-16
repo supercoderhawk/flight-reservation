@@ -16,10 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 import static com.airline.utils.Constant.reply;
@@ -301,17 +298,25 @@ public class Reservation {
     } while (!cmd.equals("0"));
   }
 
-  public static void main(String[] args) {
-    Map<String, String> argsMap = getArgs(args);
-    Reservation reservation = init();
-    String path = System.getProperty("user.dir");
-    System.out.println(path);
-    reservation.process();
-    path += "/data.json";
+  private void saveFile(){
+    String path = System.getProperty("user.dir") + "/data.json";
     try {
-      Files.write(Paths.get(path), prettyOutput(reservation.dataSource).getBytes());
+      Files.write(Paths.get(path), prettyOutput(dataSource).getBytes());
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public static void main(String[] args) {
+    Map<String, String> argsMap = getArgs(args);
+    Reservation reservation = init();
+
+    try{
+      reservation.process();
+    }catch (NoSuchElementException e){
+      System.out.println("您已退出系统！");
+    }
+
+    reservation.saveFile();
   }
 }
