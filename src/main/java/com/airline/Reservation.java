@@ -108,7 +108,7 @@ public class Reservation {
             System.out.println("欢迎进入管理员系统");
             curAdmin = resAdmin.getData();
             do {
-              System.out.println("请输入指令进行操作：0：返回上一级，1：添加航班，2,发布航班，3：修改航班，4：删除航班，5：查询航班，6：添加管理员，7，修改密码");
+              System.out.println("请输入指令进行操作：0：退出管理员系统，1：添加航班，2,发布航班，3：修改航班，4：删除航班，5：查询航班，6：添加管理员，7，修改密码");
               cmd = scanner.nextLine();
               switch (cmd) {
                 case "1":
@@ -199,6 +199,8 @@ public class Reservation {
                   resAdmin = reservation.adminService.updateAdmin(curAdmin);
                   if(!resAdmin.isStatus()){
                     System.out.println(resAdmin.getMsg());
+                  }else {
+                    System.out.println("密码修改成功，退出后可使用新密码登录");
                   }
                   break;
                 case "0":
@@ -229,7 +231,7 @@ public class Reservation {
             System.out.println(passFlight.getData().getRealName() + "您好，欢迎进入用户系统，请选择指令进行操作");
             Passenger curPassenger = passFlight.getData();
             do {
-              System.out.println("请输入指令进行操作：0：返回上一级，1：预定航班，2：退订航班，3：查询订单列表");
+              System.out.println("请输入指令进行操作：0：退出乘客系统，1：预定航班，2：退订航班，3：查询订单列表");
               cmd = scanner.nextLine();
               switch (cmd) {
                 case "1":

@@ -191,7 +191,10 @@ public class FlightAspect {
     dataSource.setModifyFlight(Operation.success());
   }
 
-  @Pointcut("execution(* com.airline.service.FlightService.*(..))")
+  @Pointcut("execution(* *.*SWITCH_TABLE*(..)) || execution(* *.*lambda*(..))")
+  public void excludeMethod(){}
+
+  @Pointcut("execution(* com.airline.service.FlightService.*(..))  && !excludeMethod()")
   public void updateStatusPoint() {
   }
 

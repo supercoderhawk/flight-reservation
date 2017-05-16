@@ -2,11 +2,14 @@ package com.airline.service;
 
 import com.airline.DataSource;
 import com.airline.bean.Flight;
+import com.airline.bean.FlightPublic;
 import com.airline.bean.OperationResult;
 import com.airline.utils.Constant;
 import com.airline.utils.Util;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static com.airline.utils.Constant.reply;
 import static org.junit.Assert.assertEquals;
@@ -16,15 +19,24 @@ import static org.junit.Assert.assertEquals;
  * 航班业务类测试文件
  */
 public class FlightServiceTest {
+  @Test
+  public void queryFlightPublic() throws Exception {
+    Flight flight = new Flight();
+    flight.setFlightID("12");
+    OperationResult<ArrayList<FlightPublic>> flights = flightService.queryFlightPublic(flight, Constant.QueryFlightStrategy.ID);
+    assertEquals(flights.isStatus(),true);
+    assertEquals(flights.getData().isEmpty(),true);
+  }
 
   private FlightService flightService;
   private Flight flight;
   private Flight flight2;
   private OperationResult<Flight> res;
+  private DataSource dataSource;
 
   @Before
   public void setUp() throws Exception {
-    DataSource dataSource = Util.loadFileToObject("init.json", DataSource.class);
+    dataSource = Util.loadFileToObject("init.json", DataSource.class);
     flightService = new FlightService(dataSource);
     flight = new Flight("BJ1001", "AAA170512-BJ1001", "10:00:00", "12:00:00", "Beijing", "Hangzhou", "2017-06-13", 10, 10);
     flight2 = new Flight("BJ1001", "AAA170801-BJ1001", "10:00:00", "12:00:00", "Beijing", "Hangzhou", "2017-08-01", 10, 10);
@@ -32,10 +44,18 @@ public class FlightServiceTest {
 
   @Test
   public void publishAllFlights() throws Exception {
+    flightService.publishAllFlights();
+    for(Flight flight:dataSource.getFlights()){
+      assertEquals(flight.getFlightStatus()== Constant.FlightStatus.UNPUBLISHED,false);
+    }
   }
 
   @Test
   public void queryFlight() throws Exception {
+    Flight flight = new Flight();
+    flight.setFlightID("BJ");
+    OperationResult<ArrayList<Flight>> flights = flightService.queryFlight(flight, Constant.QueryFlightStrategy.ID);
+    assertEquals(flights.isStatus(),true);
   }
 
   @Test
@@ -63,8 +83,8 @@ public class FlightServiceTest {
     assertEquals(res.getMsg(), reply.getFlightNoFlight());
     res = flightService.publishFlight("AAA170512-BJ1001");
     assertEquals(res.isStatus(), true);
-    //res = flightService.publishFlight("AAA170512-BJ1001");
-    //assertEquals(res.isStatus(), false);
+    res = flightService.publishFlight("AAA170512-BJ1001");
+    assertEquals(res.isStatus(), false);
   }
 
   @Test
@@ -80,9 +100,8 @@ public class FlightServiceTest {
     assertEquals(res.isStatus(), false);
     flight2.setArrivalDate("2017-08-02");
     flight2.setFlightStatus(Constant.FlightStatus.AVAILABLE);
-    //System.out.println(flight2.getFlightStatus());
-    //res = flightService.updateFlight(flight2);
-    //assertEquals(res.isStatus(), true);
+    res = flightService.updateFlight(flight2);
+    assertEquals(res.isStatus(), true);
   }
 
   @Test
