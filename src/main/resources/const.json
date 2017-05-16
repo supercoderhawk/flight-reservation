@@ -1,5 +1,6 @@
 {
   "reply":{
+    "globalParameterEmpty":"输入参数为空",
     "appInitFail":"程序初始化失败",
     "appTimeFormatError":"时间格式不对，应为：HH:mm:ss",
     "appInputInvalidate":"输入格式不合法，请重新输入",
@@ -26,6 +27,9 @@
     "orderPayCancel":"支付被取消，订单取消",
     "orderFlightCantReserve":"航班状态为：%s，无法预订",
     "orderUnsupportedCancelFlight":"订单不是未支付或者已支付状态，不能取消航班",
+    "orderNoOrdersToUnsubscribe":"没有可以退订的订单",
+    "orderNoOrderID":"未指定订单号",
+    "orderInvalidateIDToPassenger":"订单不存在，请检查后重试",
     "passengerNameEmpty":"乘客真实姓名为空",
     "passengerIdentityLengthError":"身份证号码必须为8位",
     "passengerPasswordEmpty":"密码为空",

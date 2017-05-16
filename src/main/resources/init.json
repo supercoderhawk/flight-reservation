@@ -21,8 +21,50 @@
           "flightSerial":"1",
           "createDate":"2017-05-15 10:10:10",
           "orderStatus":"unpaid"
+        },
+        {
+          "orderID":"2",
+          "passengerID":"12345678",
+          "seat":"1",
+          "flightSerial":"2",
+          "createDate":"2017-05-15 10:10:10",
+          "orderStatus":"unpaid"
+        },
+        {
+          "orderID":"22",
+          "passengerID":"12345678",
+          "seat":"2",
+          "flightSerial":"2",
+          "createDate":"2017-05-15 10:10:10",
+          "orderStatus":"paid"
         }
       ]
+    }
+  ],
+  "orders":[
+    {
+      "orderID":"1",
+      "passengerID":"12345678",
+      "seat":"1",
+      "flightSerial":"1",
+      "createDate":"2017-05-15 10:10:10",
+      "orderStatus":"unpaid"
+    },
+    {
+      "orderID":"2",
+      "passengerID":"12345678",
+      "seat":"1",
+      "flightSerial":"2",
+      "createDate":"2017-05-15 10:10:10",
+      "orderStatus":"unpaid"
+    },
+    {
+      "orderID":"22",
+      "passengerID":"12345678",
+      "seat":"2",
+      "flightSerial":"2",
+      "createDate":"2017-05-15 10:10:10",
+      "orderStatus":"paid"
     }
   ],
   "citys":["Shenzhen","Beijing","Shanghai"],
@@ -37,11 +79,11 @@
       "departureDate": "2017-06-18",
       "arrivalDate":"2017-06-19",
       "price": 120,
-      "seatCapacity": 120,
+      "seatCapacity": 2,
       "currentPassengers":1
     },
     {
-      "flightID": "SZ0001",
+      "flightID": "2",
       "flightSerial":"2",
       "startTime": "14:00:00",
       "arrivalTime": "15:00:00",
@@ -49,7 +91,8 @@
       "arrivalCity": "Beiijing",
       "departureDate": "2017-06-29",
       "price": 120,
-      "seatCapacity": 1
+      "seatCapacity": 3,
+      "currentPassengers":3
     },
     {
       "flightID": "SZ1001",

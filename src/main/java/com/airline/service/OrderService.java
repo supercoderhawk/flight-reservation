@@ -27,7 +27,7 @@ public class OrderService extends OrderDao {
   public OperationResult<Order> reserveTicket(Order order) {
     OperationResult<Flight> res = dataSource.getOrderCheck();
     if (!res.isStatus()) {
-      if(order.getOrderStatus() == OrderStatus.FAIL){
+      if (order.getOrderStatus() == OrderStatus.FAIL) {
         createOrder(order);
       }
       return Operation.fail(res.getMsg());
@@ -53,15 +53,15 @@ public class OrderService extends OrderDao {
     return Operation.success(new Order(oldOrder));
   }
 
-  public OperationResult<Order> unsubscribeFlight(Order order){
-    Order oldOrder = getOrderByID(order.getOrderID());
-    if(oldOrder.getOrderStatus() != OrderStatus.PAID || oldOrder.getOrderStatus() != OrderStatus.UNPAID){
-      return Operation.fail(reply.getOrderUnsupportedCancelFlight());
+  public OperationResult<Order> unsubscribeFlight(Order order) {
+    OperationResult<Order> res = dataSource.getCancelOrderCheck();
+    if (!res.isStatus()) {
+      return Operation.fail(res.getMsg());
     }
-    oldOrder.setOrderStatus(OrderStatus.CANCEL);
-    payOrder(oldOrder);
-    return Operation.success(oldOrder);
+    order = res.getData();
+    order.setOrderStatus(OrderStatus.CANCEL);
+    payOrder(order);
+    return Operation.success(order);
   }
-
 
 }

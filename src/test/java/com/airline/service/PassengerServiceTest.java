@@ -47,9 +47,4 @@ public class PassengerServiceTest {
     res = passengerService.login(passenger);
     assertEquals(res.isStatus(),true);
   }
-
-  @Test
-  public void addOrderToPassenger() throws Exception {
-  }
-
 }

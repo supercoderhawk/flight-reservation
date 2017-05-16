@@ -36,8 +36,7 @@ public class Reservation {
   private Passenger curPassenger;
   private Scanner scanner = new Scanner(System.in);
   private static BiConsumer<OperationResult<?>, String> prompt = (OperationResult<?> res, String succ) -> {
-    if (!res
-        .isStatus()) System.out.println(res.getMsg());
+    if (!res.isStatus()) System.out.println(res.getMsg());
     else System.out.println(succ);
   };
 
@@ -52,9 +51,8 @@ public class Reservation {
       System.exit(1);
     }
 
-    OperationResult<Flight> fligtRes;
     for (Flight flight : dataSource.getFlights()) {
-      Util.addSeats(flight.getFreeSeats(), flight.getSeatCapacity());
+      Util.addSeats(flight.getFreeSeats(), flight.getSeatCapacity()-flight.getCurrentPassengers());
       if (StringUtils.isEmpty(flight.getArrivalDate())) {
         flight.setArrivalDate(flight.getDepartureDate());
       }
@@ -159,9 +157,8 @@ public class Reservation {
           } else if (search.equals("N")) {
             System.out.println("请输入相关信息：");
             resFlight = Util.input2Object(scanner.nextLine(), Flight.class);
-            prompt.accept(Util.input2Object(scanner.nextLine(), Flight.class),
-                          prettyOutput(flightService.queryFlightPublic(resFlight.getData(),
-                                                                       Constant.QueryFlightStrategy.OTHER).getData()));
+            prompt.accept(resFlight, prettyOutput(flightService.queryFlightPublic(resFlight.getData(),
+                                                                                  Constant.QueryFlightStrategy.OTHER).getData()));
           }
           break;
         case "0":

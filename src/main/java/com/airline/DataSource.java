@@ -16,6 +16,7 @@ public class DataSource {
   private ArrayList<String> cities = new ArrayList<>();
   private OperationResult<Object> modifyFlight;
   private OperationResult<Flight> orderCheck;
+  private OperationResult<Order> cancelOrderCheck;
   private OperationResult<Object> passengerCheck;
   private boolean isLogin;
 
@@ -93,5 +94,13 @@ public class DataSource {
 
   public void setPassengerCheck(OperationResult<Object> passengerCheck) {
     this.passengerCheck = passengerCheck;
+  }
+
+  public OperationResult<Order> getCancelOrderCheck() {
+    return cancelOrderCheck;
+  }
+
+  public void setCancelOrderCheck(OperationResult<Order> cancelOrderCheck) {
+    this.cancelOrderCheck = cancelOrderCheck;
   }
 }

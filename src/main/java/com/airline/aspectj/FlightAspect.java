@@ -35,15 +35,13 @@ public class FlightAspect {
 
   /**
    * <p>在创建航班前进行参数检查。</p>
-   * <p>要求：
+   * <p>要求：</p>
    * <ol>
    * <li>航班号和航班序列号不能为空</li>
    * <li>起飞、降落的时间和城市均不能为空</li>
    * <li>更新日期时间格式必须正确</li>
    * </ol>
-   * </p>
    * <p>检查结果存储于dataSource的modifyFlight字段中</p>
-   *
    * @param joinPoint:
    * @param flight:
    */
