@@ -4,4 +4,6 @@
 
 This is a tiny flight ticket reservation program.
 
-It is a course design for Computer Programming Foundation.
+It is a course design for Computer Programming Foundation of SUSTC in 2016.
+
+Project detail is at [Wiki](https://github.com/supercoderhawk/flight-reservation/wiki)
